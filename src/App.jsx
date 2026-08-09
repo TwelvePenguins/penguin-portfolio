@@ -1,7 +1,9 @@
+import ElementTile from "./components/element-tile/ElementTile"
+
 function App() {
   return (
     <>
-      <p>Top of the morning to ya penguins!</p>
+      <ElementTile></ElementTile>
     </>
   )
 }

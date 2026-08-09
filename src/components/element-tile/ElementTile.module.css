@@ -1,0 +1,31 @@
+.element {
+    background-color: cornflowerblue;
+    aspect-ratio: 1;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+}
+
+.element p, .element h1 {
+    margin: 0;
+}
+
+p.atomic {
+    text-align: left;
+    width: 100%;
+}
+
+.element h1 {
+    font-size: 2.5rem;
+}
+
+.fullName {
+    opacity: 0.6;
+}
+
+.mass {
+    opacity: 0.6;
+    font-size: small;
+}
