@@ -4,17 +4,24 @@
     height: 100px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding: 8px;
 }
 
-.element p, .element h1 {
+.element h1 {
+    margin: -5px;
+    font-family: "Elms Sans";
+}
+
+.element p {
     margin: 0;
+    font-family: "IBM Plex Mono";
 }
 
 p.atomic {
     text-align: left;
-    width: 100%;
+    width: 90%;
 }
 
 .element h1 {
@@ -23,9 +30,10 @@ p.atomic {
 
 .fullName {
     opacity: 0.6;
+    font-size: small;
 }
 
 .mass {
     opacity: 0.6;
-    font-size: small;
+    font-size: x-small;
 }
