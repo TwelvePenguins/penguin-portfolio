@@ -1,0 +1,27 @@
+nav {
+    background-color: cornflowerblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+nav p {
+    font-family: "Elms Sans", sans-serif;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 70%;
+}
+
+.menu div {
+    font-family: "Elms Sans", sans-serif;
+}
+
+.menu div:hover {
+    background-color: cadetblue;
+    transition: background-color 1s ease-out 0.25s;
+}
