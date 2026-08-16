@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="226" height="260">
+  <text x="98" y="40" font-family="Arial" font-size="40">O</text>
+  <g fill="none" stroke="black" stroke-width="2">
+    <polyline points="75,250 113,205 165,175 165,116 113,85 61,116 61,175 113,205 151,250" />
+    <line x1="72" y1="121" x2="72" y2="169" />
+    <line x1="154" y1="121" x2="154" y2="169" />
+    <line x1="10" y1="205" x2="61" y2="175" />
+    <line x1="216" y1="205" x2="165" y2="175" />
+    <line x1="107" y1="47" x2="107" y2="88" />
+    <line x1="119" y1="47" x2="119" y2="88" />
+  </g>
+</svg>

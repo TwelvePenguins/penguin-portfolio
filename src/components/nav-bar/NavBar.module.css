@@ -19,9 +19,18 @@ nav p {
 
 .menu div {
     font-family: "Elms Sans", sans-serif;
+    height: 56px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 4px;
 }
 
 .menu div:hover {
     background-color: cadetblue;
     transition: background-color 1s ease-out 0.25s;
+}
+
+.menu img {
+    height: 2rem;
 }
