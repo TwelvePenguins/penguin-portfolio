@@ -7,13 +7,18 @@ export default function NavBar() {
             <p>Du Yuhan</p>
             {/* TODO: Above is a placeholder */}
             <div className={styles.menu}>     
-                <div>
-                    <img src={penguinone}></img>
-                    About
+                <div className={styles.menuText}>
+                    <span>About</span>
                 </div>
-                <div>Experience</div>
-                <div>Projects</div>
-                <div>Contact</div>
+                <div className={styles.menuText}>
+                    <span>Experience</span>
+                </div>
+                <div className={styles.menuText}>
+                    <span>Projects</span>
+                </div>
+                <div className={styles.menuText}>
+                    <span>Contact</span>
+                </div>
             </div>
         </nav>
     )
