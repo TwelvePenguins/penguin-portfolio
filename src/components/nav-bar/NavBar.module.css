@@ -68,4 +68,18 @@ nav p {
 .menuText:hover::before {
     opacity: 1;
     transform: scale(1);
+    animation-name: molecule-spin;
+    animation-delay: 0.2s;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+}
+
+@keyframes molecule-spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg)
+    }
 }
