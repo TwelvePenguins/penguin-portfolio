@@ -5,7 +5,10 @@ function App() {
   return (
     <>
       <NavBar></NavBar>
-      <ElementTile></ElementTile>
+      <main>
+        <h2>Hi, I'm Yuhan.</h2>
+        <ElementTile></ElementTile>
+      </main>
     </>
   )
 }
