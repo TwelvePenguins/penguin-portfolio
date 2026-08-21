@@ -1,7 +1,7 @@
 .element {
-    background-color: cornflowerblue;
+    border: 1px solid cornflowerblue;
     aspect-ratio: 1;
-    height: 100px;
+    height: 75px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,15 +25,15 @@ p.atomic {
 }
 
 .element h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 .fullName {
     opacity: 0.6;
-    font-size: small;
+    font-size: 0.7rem;
 }
 
 .mass {
     opacity: 0.6;
-    font-size: x-small;
+    font-size: 0.5rem;
 }

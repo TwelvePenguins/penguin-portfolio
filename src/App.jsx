@@ -1,6 +1,7 @@
 import ElementTile from "./components/element-tile/ElementTile";
 import NavBar from "./components/nav-bar/NavBar";
 import TextCarousell from "./components/text-carousell/text-carousell";
+import "./App.css";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           <h2>Hi, I'm</h2>
           <div className="name">
             <ElementTile></ElementTile>
-            uhan.
+            <h1>uhan.</h1>
           </div>
         </header>
         <p className="subtitle">
