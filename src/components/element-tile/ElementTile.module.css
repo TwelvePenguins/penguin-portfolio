@@ -1,17 +1,18 @@
 .element {
     border: 1px solid cornflowerblue;
-    aspect-ratio: 1;
-    height: 75px;
+    height: min-content;
+    width: calc(45px + 0.7rem);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 8px;
+    padding-bottom: 0.7rem;
+    transition: width 0.4s ease-in;
 }
 
-.element h1 {
+.element h1:first-of-type {
     margin: -5px;
     font-family: "Elms Sans";
+    font-size: 2rem;
 }
 
 .element p {
@@ -21,11 +22,8 @@
 
 p.atomic {
     text-align: left;
+    font-size: 0.7rem;
     width: 90%;
-}
-
-.element h1 {
-    font-size: 2rem;
 }
 
 .fullName {
@@ -36,4 +34,26 @@ p.atomic {
 .mass {
     opacity: 0.6;
     font-size: 0.5rem;
+    text-align: center;
 }
+
+.reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.4s ease-in, opacity 1s ease-in;
+}
+
+.element:hover .reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.element:hover {
+    width: calc(45px + 0.7rem*2 + 0.5rem)
+}
+
+.reveal>* {
+    min-height: 0;
+    overflow: hidden;
+  }

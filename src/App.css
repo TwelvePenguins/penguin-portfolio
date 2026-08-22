@@ -19,7 +19,11 @@ header {
 
 .name {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.name h1 {
+    margin-block: 0.7rem;
 }
 
 .subtitle {
