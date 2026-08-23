@@ -4,7 +4,7 @@ import penguinone from "../../assets/Penguinone.svg"
 export default function NavBar() {
     return (
         <nav>
-            <p>Du Yuhan</p>
+            <h1>Du Yuhan</h1>
             {/* TODO: Above is a placeholder */}
             <div className={styles.menu}>     
                 <div className={styles.menuText}>

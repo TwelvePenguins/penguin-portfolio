@@ -10,6 +10,12 @@ nav p {
     font-family: "Elms Sans", sans-serif;
 }
 
+nav h1 {
+    margin: 0;
+    font-family: "Elms Sans", sans-serif;
+    font-size: larger;
+}
+
 .menu {
     display: flex;
     justify-content: space-around;
