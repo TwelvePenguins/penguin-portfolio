@@ -1,7 +1,7 @@
 import ElementTile from "./components/element-tile/ElementTile";
 import NavBar from "./components/nav-bar/NavBar";
-import TextCarousell from "./components/text-carousell/text-carousell";
 import "./App.css";
+import ThreeMolecule from "./components/three-molecule/ThreeMolecule";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <p className="subtitle">
           "We are made of star stuff" - Carl Sagan
         </p>
-        <TextCarousell></TextCarousell>
+        <ThreeMolecule />
       </main>
     </>
   )
