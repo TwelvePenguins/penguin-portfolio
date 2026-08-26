@@ -3,9 +3,9 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: black;
     height: 100vh;
 }
+
 main h1, main h2, main h3, main p {
     color: white;
     font-family: "Elms Sans";
@@ -29,4 +29,16 @@ header {
 .subtitle {
     font-family: "IBM plex mono";
     opacity: 0.6;
+}
+
+#content {
+    z-index: 1;
+}
+
+#background {
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    background-color: black;
+    z-index: 0;
 }

@@ -28,6 +28,7 @@ export default function ThreeMolecule() {
         const material = new THREE.MeshPhongMaterial({color: 0x44aa88, flatShading: true})
         const sphere = new THREE.Mesh(geo, material);
         scene.add(sphere);
+        sphere.position.set(-2, 0, 0)
 
         renderer.setAnimationLoop((time) => {
             time *= 0.001;
@@ -39,7 +40,7 @@ export default function ThreeMolecule() {
         });
 
         const light = new THREE.DirectionalLight(0xFFFFFF, 3);
-        light.position.set(-1, 2, 4);
+        light.position.set(2, 2, 4);
         scene.add(light);
 
         return () => {
