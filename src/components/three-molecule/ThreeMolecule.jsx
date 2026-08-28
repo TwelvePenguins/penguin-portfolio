@@ -18,23 +18,36 @@ export default function ThreeMolecule() {
             75, 
             canvas.clientWidth / canvas.clientHeight,
             0.1, 
-            10
+            100
         );
         camera.position.z = 3;
 
         const scene = new THREE.Scene();
 
         const geo = new THREE.SphereGeometry(1, 12, 12);
-        const material = new THREE.MeshPhongMaterial({color: 0x44aa88, flatShading: true})
-        const sphere = new THREE.Mesh(geo, material);
-        scene.add(sphere);
-        sphere.position.set(-2, 0, 0)
+        const sunMaterial = new THREE.MeshPhongMaterial({color: 0x44aa88, flatShading: true})
+
+        const sun = new THREE.Mesh(geo, sunMaterial);
+        scene.add(sun);
+        sun.position.set(-2.5, 0, 0)
+        
+        const europaMaterial = new THREE.MeshPhongMaterial({color: 0x6e312c, flatShading: true})
+        const europa = new THREE.Mesh(geo, europaMaterial);
+        scene.add(europa);
+        europa.position.set(6, 3, -5);
+
+        const asteroidMat = new THREE.MeshPhongMaterial({color: 0x6b6b6b, flatShading: true})
+        const asteroid = new THREE.Mesh(geo, asteroidMat);
+        scene.add(asteroid);
+        asteroid.position.set(8, -4, -10);
 
         renderer.setAnimationLoop((time) => {
             time *= 0.001;
            
-            sphere.rotation.x = time;
-            sphere.rotation.y = time;
+            sun.rotation.y = time/10;
+            europa.rotation.y = time;
+            asteroid.rotation.x = time;
+            asteroid.rotation.y = time*3;
            
             renderer.render(scene, camera);
         });
@@ -46,7 +59,8 @@ export default function ThreeMolecule() {
         return () => {
             renderer.setAnimationLoop(null);
             geo.dispose();
-            material.dispose();
+            sunMaterial.dispose();
+            europaMaterial.dispose();
             renderer.dispose();
         }
     }, [])
