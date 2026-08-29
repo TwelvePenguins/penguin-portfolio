@@ -1,5 +1,8 @@
 import * as THREE from "three";
 import styles from "./ThreeMolecule.module.css";
+import europaMap from "../../assets/Europa_Test.jpg"
+import sunMap from "../../assets/Sun_Test_2k.jpg"
+import bennuMap from "../../assets/Bennu_Test.jpg"
 import { useEffect, useRef } from "react";
 
 export default function ThreeMolecule() {
@@ -24,19 +27,30 @@ export default function ThreeMolecule() {
 
         const scene = new THREE.Scene();
 
-        const geo = new THREE.SphereGeometry(1, 12, 12);
-        const sunMaterial = new THREE.MeshPhongMaterial({color: 0x44aa88, flatShading: true})
+        const loader = new THREE.TextureLoader();
+
+        const geo = new THREE.SphereGeometry(1, 32, 32);
+        
+        const sunTexture = loader.load(sunMap);
+        sunTexture.colorSpace = THREE.SRGBColorSpace;
+        const sunMaterial = new THREE.MeshPhongMaterial({map: sunTexture})
 
         const sun = new THREE.Mesh(geo, sunMaterial);
         scene.add(sun);
         sun.position.set(-2.5, 0, 0)
         
-        const europaMaterial = new THREE.MeshPhongMaterial({color: 0x6e312c, flatShading: true})
+        const europaTexture = loader.load(europaMap);
+        europaTexture.colorSpace = THREE.SRGBColorSpace;
+        const europaMaterial = new THREE.MeshPhongMaterial({map: europaTexture})
+
         const europa = new THREE.Mesh(geo, europaMaterial);
         scene.add(europa);
         europa.position.set(6, 3, -5);
 
-        const asteroidMat = new THREE.MeshPhongMaterial({color: 0x6b6b6b, flatShading: true})
+        const asteroidTexture = loader.load(bennuMap);
+        asteroidTexture.colorSpace = THREE.SRGBColorSpace;
+        const asteroidMat = new THREE.MeshPhongMaterial({map: asteroidTexture})
+
         const asteroid = new THREE.Mesh(geo, asteroidMat);
         scene.add(asteroid);
         asteroid.position.set(8, -4, -10);
