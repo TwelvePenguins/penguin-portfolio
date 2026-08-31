@@ -56,7 +56,7 @@ nav h1 {
 }
 
 .menuText:hover span::after {
-    transform: scaleX(1)
+    transform: scaleX(1);
 }
 
 .menuText::before {
@@ -67,8 +67,9 @@ nav h1 {
 
     opacity: 0;
     transform: scale(0.8);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
 
 .menuText:hover::before {
@@ -86,6 +87,6 @@ nav h1 {
     }
 
     to {
-        transform: rotate(360deg)
+        transform: rotate(360deg);
     }
 }

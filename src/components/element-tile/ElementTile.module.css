@@ -7,7 +7,9 @@
     align-items: center;
     padding-bottom: 0.7rem;
     background-color: none;
-    transition: width 0.4s ease-in, background-color 0.4s ease-in;
+    transition:
+        width 0.4s ease-in,
+        background-color 0.4s ease-in;
 }
 
 .element h1:first-of-type {
@@ -40,7 +42,9 @@ p.atomic {
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
-    transition: grid-template-rows 0.4s ease-in, opacity 1s ease-in;
+    transition:
+        grid-template-rows 0.4s ease-in,
+        opacity 1s ease-in;
 }
 
 .element:hover .reveal {
@@ -49,11 +53,11 @@ p.atomic {
 }
 
 .element:hover {
-    width: calc(45px + 0.7rem*2 + 0.5rem);
+    width: calc(45px + 0.7rem * 2 + 0.5rem);
     background-color: cornflowerblue;
 }
 
-.reveal>* {
+.reveal > * {
     min-height: 0;
     overflow: hidden;
-  }
+}
