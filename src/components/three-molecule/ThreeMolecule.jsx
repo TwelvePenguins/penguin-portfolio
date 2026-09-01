@@ -23,7 +23,10 @@ export default function ThreeMolecule() {
             0.1,
             100,
         );
-        camera.position.z = 3;
+
+        const CAMERA_Z = 3;
+
+        camera.position.z = CAMERA_Z;
 
         const scene = new THREE.Scene();
 
@@ -31,20 +34,36 @@ export default function ThreeMolecule() {
 
         const geo = new THREE.SphereGeometry(1, 32, 32);
 
+        const SUN_X = -2.5
+
         const sunTexture = loader.load(sunMap);
         sunTexture.colorSpace = THREE.SRGBColorSpace;
         const sunMaterial = new THREE.MeshPhongMaterial({ map: sunTexture });
-
         const sun = new THREE.Mesh(geo, sunMaterial);
         scene.add(sun);
-        sun.position.set(-2.5, 0, 0);
+        sun.position.set(SUN_X, 0, 0);
+
+        const RADIUS = 2;
+        const RING_Z = -1;
+
+        function findRingX(ringZ, sunX, cameraZ) {
+            const lamda = (cameraZ - ringZ) / cameraZ;
+            const mu = sunX * lamda;
+            return mu;
+        }
+
+        const ringGeo = new THREE.RingGeometry(RADIUS - 0.05, RADIUS, 64);
+        const ringMaterial = new THREE.MeshBasicMaterial({color: 0xffffff})
+        const ring = new THREE.Mesh(ringGeo, ringMaterial);
+        scene.add(ring);
+        ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z), 0, RING_Z);
+        ring.rotation.y = Math.PI * 75 / 360;
 
         const europaTexture = loader.load(europaMap);
         europaTexture.colorSpace = THREE.SRGBColorSpace;
         const europaMaterial = new THREE.MeshPhongMaterial({
             map: europaTexture,
         });
-
         const europa = new THREE.Mesh(geo, europaMaterial);
         scene.add(europa);
         europa.position.set(6, 3, -5);
@@ -54,7 +73,6 @@ export default function ThreeMolecule() {
         const asteroidMat = new THREE.MeshPhongMaterial({
             map: asteroidTexture,
         });
-
         const asteroid = new THREE.Mesh(geo, asteroidMat);
         scene.add(asteroid);
         asteroid.position.set(8, -4, -10);
