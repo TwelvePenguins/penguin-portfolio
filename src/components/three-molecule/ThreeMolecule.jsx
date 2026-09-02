@@ -15,7 +15,6 @@ export default function ThreeMolecule() {
             antialias: true,
             canvas,
         });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 
         const camera = new THREE.PerspectiveCamera(
             75,
@@ -23,6 +22,14 @@ export default function ThreeMolecule() {
             0.1,
             100,
         );
+
+        const resizeObserver = new ResizeObserver(() => {
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+        })
+
+        resizeObserver.observe(canvas);
 
         const CAMERA_Z = 3;
 
@@ -44,7 +51,7 @@ export default function ThreeMolecule() {
         sun.position.set(SUN_X, 0, 0);
 
         const RADIUS = 2;
-        const RING_Z = -1;
+        const RING_Z = -1.5;
 
         function findRingX(ringZ, sunX, cameraZ) {
             const lamda = (cameraZ - ringZ) / cameraZ;
@@ -52,8 +59,8 @@ export default function ThreeMolecule() {
             return mu;
         }
 
-        const ringGeo = new THREE.RingGeometry(RADIUS - 0.05, RADIUS, 64);
-        const ringMaterial = new THREE.MeshBasicMaterial({color: 0xffffff})
+        const ringGeo = new THREE.RingGeometry(RADIUS - 0.02, RADIUS, 64);
+        const ringMaterial = new THREE.MeshBasicMaterial({color: 0x7D6938})
         const ring = new THREE.Mesh(ringGeo, ringMaterial);
         scene.add(ring);
         ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z), 0, RING_Z);
@@ -66,7 +73,7 @@ export default function ThreeMolecule() {
         });
         const europa = new THREE.Mesh(geo, europaMaterial);
         scene.add(europa);
-        europa.position.set(6, 3, -5);
+        europa.position.set(8, 3, -5);
 
         const asteroidTexture = loader.load(bennuMap);
         asteroidTexture.colorSpace = THREE.SRGBColorSpace;
@@ -93,6 +100,7 @@ export default function ThreeMolecule() {
         scene.add(light);
 
         return () => {
+            resizeObserver.disconnect();
             renderer.setAnimationLoop(null);
             geo.dispose();
             sunMaterial.dispose();
