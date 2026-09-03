@@ -4,6 +4,7 @@ import europaMap from "../../assets/Europa_Test.jpg";
 import sunMap from "../../assets/Sun_Test_2k.jpg";
 import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useEffect, useRef } from "react";
+import { color } from "three/tsl";
 
 export default function ThreeMolecule() {
     const canvasRef = useRef(null);
@@ -27,7 +28,7 @@ export default function ThreeMolecule() {
             renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
             camera.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.updateProjectionMatrix();
-        })
+        });
 
         resizeObserver.observe(canvas);
 
@@ -41,7 +42,7 @@ export default function ThreeMolecule() {
 
         const geo = new THREE.SphereGeometry(1, 32, 32);
 
-        const SUN_X = -2.5
+        const SUN_X = -2.5;
 
         const sunTexture = loader.load(sunMap);
         sunTexture.colorSpace = THREE.SRGBColorSpace;
@@ -50,7 +51,9 @@ export default function ThreeMolecule() {
         scene.add(sun);
         sun.position.set(SUN_X, 0, 0);
 
-        const RADIUS = 2;
+        const radiusList = [2, 2.75, 4, 6, 11];
+        const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
+        const thicknessList = []; //TODO: calculate and add thickness
         const RING_Z = -1.5;
 
         function findRingX(ringZ, sunX, cameraZ) {
@@ -59,12 +62,20 @@ export default function ThreeMolecule() {
             return mu;
         }
 
-        const ringGeo = new THREE.RingGeometry(RADIUS - 0.02, RADIUS, 64);
-        const ringMaterial = new THREE.MeshBasicMaterial({color: 0x7D6938})
-        const ring = new THREE.Mesh(ringGeo, ringMaterial);
-        scene.add(ring);
-        ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z), 0, RING_Z);
-        ring.rotation.y = Math.PI * 75 / 360;
+        for (let i = 0; i < radiusList.length; i++) {
+            const radius = radiusList[i];
+            const color = colorList[i];
+
+            const ringGeo = new THREE.RingGeometry(radius - 0.02, radius, 64);
+            const ringMaterial = new THREE.MeshBasicMaterial({
+                color: color,
+                opacity: 0,
+            });
+            const ring = new THREE.Mesh(ringGeo, ringMaterial);
+            scene.add(ring);
+            ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z), 0, RING_Z);
+            ring.rotation.y = (Math.PI * 75) / 360;
+        }
 
         const europaTexture = loader.load(europaMap);
         europaTexture.colorSpace = THREE.SRGBColorSpace;
