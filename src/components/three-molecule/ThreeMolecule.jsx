@@ -51,10 +51,9 @@ export default function ThreeMolecule() {
         scene.add(sun);
         sun.position.set(SUN_X, 0, 0);
 
-        const radiusList = [2, 2.75, 4, 6, 11];
+        const radiusList = [3.75, 5, 6, 7.5, 9.5];
         const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
-        const thicknessList = []; //TODO: calculate and add thickness
-        const RING_Z = -1.5;
+        const RING_Z = -2.5;
 
         function findRingX(ringZ, sunX, cameraZ) {
             const lamda = (cameraZ - ringZ) / cameraZ;
@@ -73,8 +72,7 @@ export default function ThreeMolecule() {
             });
             const ring = new THREE.Mesh(ringGeo, ringMaterial);
             scene.add(ring);
-            ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z), 0, RING_Z);
-            ring.rotation.y = (Math.PI * 75) / 360;
+            ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z) - 0.5, 0, RING_Z);
         }
 
         const europaTexture = loader.load(europaMap);
