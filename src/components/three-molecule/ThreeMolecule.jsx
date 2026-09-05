@@ -54,6 +54,7 @@ export default function ThreeMolecule() {
         const radiusList = [3.75, 5, 6, 7.5, 9.5];
         const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
         const RING_Z = -2.5;
+        const ringMaterials = [];
 
         function findRingX(ringZ, sunX, cameraZ) {
             const lamda = (cameraZ - ringZ) / cameraZ;
@@ -69,11 +70,34 @@ export default function ThreeMolecule() {
             const ringMaterial = new THREE.MeshBasicMaterial({
                 color: color,
                 opacity: 0,
+                transparent: true,
             });
+            ringMaterials.push(ringMaterial);
             const ring = new THREE.Mesh(ringGeo, ringMaterial);
             scene.add(ring);
-            ring.position.set(findRingX(RING_Z, SUN_X, CAMERA_Z) - 0.5, 0, RING_Z);
+            ring.position.set(
+                findRingX(RING_Z, SUN_X, CAMERA_Z) - 0.5,
+                0,
+                RING_Z,
+            );
         }
+        let targetRingOpacity = 0;
+        let ringOpacity = 0;
+
+        const FADE_START = 0;
+        const FADE_END = 486;
+
+        function handleScroll() {
+            targetRingOpacity = THREE.MathUtils.clamp(
+                (window.scrollY - FADE_START) / (FADE_END - FADE_START),
+                0,
+                1,
+            );
+            console.log(window.scrollY);
+        }
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
 
         const europaTexture = loader.load(europaMap);
         europaTexture.colorSpace = THREE.SRGBColorSpace;
@@ -101,6 +125,22 @@ export default function ThreeMolecule() {
             asteroid.rotation.x = time;
             asteroid.rotation.y = time * 3;
 
+            ringOpacity = THREE.MathUtils.lerp(
+                ringOpacity,
+                targetRingOpacity,
+                0.08,
+            );
+
+            ringMaterials.forEach((material, i) => {
+                const delay = i * 0.12;
+
+                material.opacity = THREE.MathUtils.clamp(
+                    (ringOpacity - delay) / (1 - delay),
+                    0,
+                    1,
+                )
+            });
+
             renderer.render(scene, camera);
         });
 
@@ -110,6 +150,7 @@ export default function ThreeMolecule() {
 
         return () => {
             resizeObserver.disconnect();
+            window.removeEventListener("scroll", handleScroll);
             renderer.setAnimationLoop(null);
             geo.dispose();
             sunMaterial.dispose();
