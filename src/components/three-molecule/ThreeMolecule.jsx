@@ -51,7 +51,9 @@ export default function ThreeMolecule() {
         scene.add(sun);
         sun.position.set(SUN_X, 0, 0);
 
-        const radiusList = [3.75, 5, 6, 7.5, 9.5];
+        const orbitRadiusList = [3.75, 5, 6, 7.5, 9.5];
+        const planetRadiusList = [0.15, 0.20, 0.30, 0.40, 1];
+        const planetPositionXY = [[-7, 3.2], [-1.1, -3], [0.4, 2.4], [1.25, -4], [4, 2.3]]
         const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
         const RING_Z = -2.5;
         const ringMaterials = [];
@@ -62,25 +64,32 @@ export default function ThreeMolecule() {
             return mu;
         }
 
-        for (let i = 0; i < radiusList.length; i++) {
-            const radius = radiusList[i];
+        for (let i = 0; i < orbitRadiusList.length; i++) {
+            const orbitRadius = orbitRadiusList[i];
+            const planetRadius = planetRadiusList[i];
+            const planetPosition = planetPositionXY[i];
             const color = colorList[i];
 
-            const ringGeo = new THREE.RingGeometry(radius - 0.02, radius, 64);
+            const orbitGeo = new THREE.RingGeometry(orbitRadius - 0.02, orbitRadius, 64);
+            const planetGeo = new THREE.RingGeometry(planetRadius - 0.02, planetRadius, 64);
             const ringMaterial = new THREE.MeshBasicMaterial({
                 color: color,
                 opacity: 0,
                 transparent: true,
             });
             ringMaterials.push(ringMaterial);
-            const ring = new THREE.Mesh(ringGeo, ringMaterial);
-            scene.add(ring);
-            ring.position.set(
+            const orbit = new THREE.Mesh(orbitGeo, ringMaterial);
+            const planet = new THREE.Mesh(planetGeo, ringMaterial);
+            scene.add(orbit);
+            orbit.position.set(
                 findRingX(RING_Z, SUN_X, CAMERA_Z) - 0.5,
                 0,
                 RING_Z,
             );
+            scene.add(planet);
+            planet.position.set(planetPosition[0], planetPosition[1], RING_Z)
         }
+
         let targetRingOpacity = 0;
         let ringOpacity = 0;
 
@@ -106,7 +115,7 @@ export default function ThreeMolecule() {
         });
         const europa = new THREE.Mesh(geo, europaMaterial);
         scene.add(europa);
-        europa.position.set(8, 3, -5);
+        europa.position.set(9, 2.5, -5);
 
         const asteroidTexture = loader.load(bennuMap);
         asteroidTexture.colorSpace = THREE.SRGBColorSpace;
@@ -115,7 +124,7 @@ export default function ThreeMolecule() {
         });
         const asteroid = new THREE.Mesh(geo, asteroidMat);
         scene.add(asteroid);
-        asteroid.position.set(8, -4, -10);
+        asteroid.position.set(7, -6, -10);
 
         renderer.setAnimationLoop((time) => {
             time *= 0.001;
@@ -138,7 +147,7 @@ export default function ThreeMolecule() {
                     (ringOpacity - delay) / (1 - delay),
                     0,
                     1,
-                )
+                );
             });
 
             renderer.render(scene, camera);
