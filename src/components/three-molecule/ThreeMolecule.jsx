@@ -52,8 +52,14 @@ export default function ThreeMolecule() {
         sun.position.set(SUN_X, 0, 0);
 
         const orbitRadiusList = [3.75, 5, 6, 7.5, 9.5];
-        const planetRadiusList = [0.15, 0.20, 0.30, 0.40, 1];
-        const planetPositionXY = [[-7, 3.2], [-1.1, -3], [0.4, 2.4], [1.25, -4], [4, 2.3]]
+        const planetRadiusList = [0.15, 0.2, 0.3, 0.4, 1];
+        const planetPositionXY = [
+            [-7, 3.2],
+            [-1.1, -3],
+            [0.4, 2.4],
+            [1.25, -4],
+            [4, 2.3],
+        ];
         const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
         const RING_Z = -2.5;
         const ringMaterials = [];
@@ -70,8 +76,16 @@ export default function ThreeMolecule() {
             const planetPosition = planetPositionXY[i];
             const color = colorList[i];
 
-            const orbitGeo = new THREE.RingGeometry(orbitRadius - 0.02, orbitRadius, 64);
-            const planetGeo = new THREE.RingGeometry(planetRadius - 0.02, planetRadius, 64);
+            const orbitGeo = new THREE.RingGeometry(
+                orbitRadius - 0.02,
+                orbitRadius,
+                64,
+            );
+            const planetGeo = new THREE.RingGeometry(
+                planetRadius - 0.02,
+                planetRadius,
+                64,
+            );
             const ringMaterial = new THREE.MeshBasicMaterial({
                 color: color,
                 opacity: 0,
@@ -87,26 +101,8 @@ export default function ThreeMolecule() {
                 RING_Z,
             );
             scene.add(planet);
-            planet.position.set(planetPosition[0], planetPosition[1], RING_Z)
+            planet.position.set(planetPosition[0], planetPosition[1], RING_Z);
         }
-
-        let targetRingOpacity = 0;
-        let ringOpacity = 0;
-
-        const FADE_START = 0;
-        const FADE_END = 486;
-
-        function handleScroll() {
-            targetRingOpacity = THREE.MathUtils.clamp(
-                (window.scrollY - FADE_START) / (FADE_END - FADE_START),
-                0,
-                1,
-            );
-            console.log(window.scrollY);
-        }
-
-        window.addEventListener("scroll", handleScroll);
-        handleScroll();
 
         const europaTexture = loader.load(europaMap);
         europaTexture.colorSpace = THREE.SRGBColorSpace;
@@ -126,6 +122,34 @@ export default function ThreeMolecule() {
         scene.add(asteroid);
         asteroid.position.set(7, -6, -10);
 
+        let targetRingOpacity = 0;
+        let ringOpacity = 0;
+
+        const FADE_START = 0;
+        const FADE_END = 486;
+
+        function handleScroll() {
+            targetRingOpacity = THREE.MathUtils.clamp(
+                (window.scrollY - FADE_START) / (FADE_END - FADE_START),
+                0,
+                1,
+            );
+        }
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+
+        let normalisedCursorPos = [0,0];
+
+        function handlePointerMove(event) {
+            normalisedCursorPos = [
+                (event.clientX / canvas.clientWidth) * 2 - 1,
+                -(event.clientY / canvas.clientHeight) * 2 + 1,
+            ];
+        }
+
+        window.addEventListener("pointermove", handlePointerMove);
+
         renderer.setAnimationLoop((time) => {
             time *= 0.001;
 
@@ -133,6 +157,18 @@ export default function ThreeMolecule() {
             europa.rotation.y = time;
             asteroid.rotation.x = time;
             asteroid.rotation.y = time * 3;
+
+            camera.position.x = THREE.MathUtils.lerp(
+                camera.position.x,
+                normalisedCursorPos[0] * 0.2,
+                0.1,
+            );
+
+            camera.position.y = THREE.MathUtils.lerp(
+                camera.position.y,
+                normalisedCursorPos[1] * 0.2,
+                0.1,
+            );
 
             ringOpacity = THREE.MathUtils.lerp(
                 ringOpacity,
@@ -160,6 +196,7 @@ export default function ThreeMolecule() {
         return () => {
             resizeObserver.disconnect();
             window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("pointermove", handlePointerMove);
             renderer.setAnimationLoop(null);
             geo.dispose();
             sunMaterial.dispose();
