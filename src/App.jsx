@@ -2,6 +2,7 @@ import ElementTile from "./components/element-tile/ElementTile";
 import NavBar from "./components/nav-bar/NavBar";
 import "./App.css";
 import ThreeMolecule from "./components/three-molecule/ThreeMolecule";
+import HeroBackground from "./components/hero-background/HeroBackground";
 
 function App() {
     return (
@@ -10,7 +11,7 @@ function App() {
             <main>
                 <div className="sticky">
                     <div id="background">
-                        <ThreeMolecule />
+                        <HeroBackground></HeroBackground>
                     </div>
                     <div id="content">
                         <header>
