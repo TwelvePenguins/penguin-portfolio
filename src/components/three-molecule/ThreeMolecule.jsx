@@ -1,10 +1,8 @@
 import * as THREE from "three";
-import styles from "./ThreeMolecule.module.css";
 import europaMap from "../../assets/Europa_Test.jpg";
 import sunMap from "../../assets/Sun_Test_2k.jpg";
 import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useEffect, useRef } from "react";
-import { color } from "three/tsl";
 
 export default function ThreeMolecule() {
     const canvasRef = useRef(null);
@@ -46,7 +44,12 @@ export default function ThreeMolecule() {
 
         const sunTexture = loader.load(sunMap);
         sunTexture.colorSpace = THREE.SRGBColorSpace;
-        const sunMaterial = new THREE.MeshPhongMaterial({ map: sunTexture });
+        const sunMaterial = new THREE.MeshStandardMaterial({
+            map: sunTexture,
+            emissive: 0xffffff,
+            emissiveMap: sunTexture,
+            emissiveIntensity: 1,
+        });
         const sun = new THREE.Mesh(geo, sunMaterial);
         scene.add(sun);
         sun.position.set(SUN_X, 0, 0);
@@ -139,7 +142,7 @@ export default function ThreeMolecule() {
         window.addEventListener("scroll", handleScroll);
         handleScroll();
 
-        let normalisedCursorPos = [0,0];
+        let normalisedCursorPos = [0, 0];
 
         function handlePointerMove(event) {
             normalisedCursorPos = [
@@ -190,7 +193,8 @@ export default function ThreeMolecule() {
         });
 
         const light = new THREE.DirectionalLight(0xffffff, 3);
-        light.position.set(2, 2, 4);
+        light.position.set(-2, 0, 0);
+        light.target.position.set(10, 0, 0);
         scene.add(light);
 
         return () => {
