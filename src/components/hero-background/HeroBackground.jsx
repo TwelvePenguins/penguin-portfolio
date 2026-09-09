@@ -18,8 +18,8 @@ export default function HeroBackground() {
         <Canvas
             camera={{ position: [0, 0, 3], fov: 75 }}
         >
-            <ambientLight intensity={0.1} />
-            <directionalLight color="white" position={[0, 0, 5]} />
+            <ambientLight intensity={0.5}/>
+            <directionalLight color="white" position={[-2, 0, 0]} target-position={[10, 0, 0]}/>
             <Sun texture={sunTexture} />
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
