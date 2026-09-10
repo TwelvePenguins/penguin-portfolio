@@ -7,7 +7,6 @@ import Sun from "./Sun";
 import Europa from "./Europa";
 import Bennu from "./Bennu";
 import Orbit from "./Orbit";
-import * as THREE from "three";
 
 export default function HeroBackground() {
     const [europaTexture, sunTexture, bennuTexture] = useLoader(TextureLoader, [
@@ -27,30 +26,23 @@ export default function HeroBackground() {
     const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
 
     const orbits = [];
-    const orbitMats = [];
 
     for (let i = 0; i < orbitRadiusList.length; i++) {
         const orbitRadius = orbitRadiusList[i];
         const planetRadius = planetRadiusList[i];
         const planetPosition = planetPositionXY[i];
         const color = colorList[i];
-        const material = new THREE.MeshBasicMaterial({
-            color: color,
-            opacity: 1,
-            transparent: true,
-        });
 
         orbits.push(
             <Orbit
                 orbitRadius={orbitRadius}
                 planetRadius={planetRadius}
                 planetPosition={planetPosition}
-                material={material}
+                color={color}
                 key={planetPosition.join(",")}
+                index={i}
             />,
         );
-
-        orbitMats.push(material);
     }
 
     return (
