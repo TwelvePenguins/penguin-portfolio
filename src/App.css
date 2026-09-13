@@ -30,8 +30,23 @@ header {
     opacity: 0.6;
 }
 
-#content {
+#overlay {
     z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    bottom: 96px;
+    /* TODO: make the 96px disappear once scrolled (ie. remain centre of the screen even after scroll) */
 }
 
 #background {
@@ -52,4 +67,24 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#scroll-indication {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 10vh;
+}
+
+#scroll-indication>.subtitle {
+    margin: 0;
+}
+
+#scroll-indication:last-child {
+    animation-name: vertical-bounce;
+}
+
+@keyframes vertical-bounce {
+    
 }
