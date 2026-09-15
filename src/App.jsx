@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 
 function App() {
     const scrollIndicatorRef = useRef();
+    const heroRef = useRef(null);
 
     const SCROLL_FADE_START = 0;
     const SCROLL_FADE_END = 50;
@@ -35,29 +36,27 @@ function App() {
     return (
         <>
             <NavBar></NavBar>
-            <main>
-                <div className="sticky">
-                    <div id="background">
-                        <HeroBackground></HeroBackground>
+            <main ref={heroRef}>
+                <div id="overlay">
+                    <div id="content">
+                        <header>
+                            <h2>Hi, I'm</h2>
+                            <div className="name">
+                                <ElementTile></ElementTile>
+                                <h1>uhan.</h1>
+                            </div>
+                        </header>
+                        <p className="subtitle">
+                            "We are made of star stuff" - Carl Sagan
+                        </p>
                     </div>
-                    <div id="overlay">
-                        <div id="content">
-                            <header>
-                                <h2>Hi, I'm</h2>
-                                <div className="name">
-                                    <ElementTile></ElementTile>
-                                    <h1>uhan.</h1>
-                                </div>
-                            </header>
-                            <p className="subtitle">
-                                "We are made of star stuff" - Carl Sagan
-                            </p>
-                        </div>
-                        <div id="scroll-indication" ref={scrollIndicatorRef}>
-                            <p className="subtitle">Scroll to see more</p>
-                            <ChevronDown color="gray" />
-                        </div>
+                    <div id="scroll-indication" ref={scrollIndicatorRef}>
+                        <p className="subtitle">Scroll to see more</p>
+                        <ChevronDown color="gray" />
                     </div>
+                </div>
+                <div id="background">
+                    <HeroBackground eventSource={heroRef} />
                 </div>
             </main>
         </>
