@@ -4,6 +4,8 @@ import "./App.css";
 import HeroBackground from "./components/hero-background/HeroBackground";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef } from "react";
+import Lenis from "lenis";
+import "lenis/dist/lenis.css";
 
 function App() {
     const scrollIndicatorRef = useRef();
@@ -28,8 +30,16 @@ function App() {
         window.addEventListener("scroll", handleScroll);
         handleScroll();
 
+        const lenis = new Lenis({
+            autoRaf: true,
+            smoothWheel: true,
+            lerp: 0.10,
+            wheelMultiplier: 0.8,
+        });
+
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            lenis.destroy();
         };
     }, []);
 
