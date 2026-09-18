@@ -8,6 +8,7 @@ import Europa from "./Europa";
 import Bennu from "./Bennu";
 import Orbit from "./Orbit";
 import * as THREE from "three";
+import { Text } from "@react-three/drei";
 
 export default function HeroScene() {
     const [europaTexture, sunTexture, bennuTexture] = useLoader(TextureLoader, [
@@ -73,6 +74,7 @@ export default function HeroScene() {
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}
+            <Text text="Europa" curveRadius={1} color="ffffff" anchorX={0} anchorY={-1.5} depthOffset={-5} fontSize={0.1}></Text>
         </>
     );
 }
