@@ -74,9 +74,9 @@ export default function HeroScene() {
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}
-            <CurvedText content={"Europa"} position={[9.4, 4, -5]} curvature={Math.PI / 3} radius={2} fontSize={0.3}/>
-            <CurvedText content={"Sun"} position={[-2.75, 1.3, 0]} curvature={Math.PI / 10} radius={2} fontSize={0.2}/>
-            <CurvedText content={"Asteroid Bennu"} position={[7, -4.25, -10]} curvature={Math.PI / 1.5} radius={2} fontSize={0.4}/>
+            <CurvedText content={"Sun"} position={[-2.75, 1.3, 0]} curvature={Math.PI / 10} radius={2} fontSize={0.2} order={0}/>
+            <CurvedText content={"Europa"} position={[9.4, 4, -5]} curvature={Math.PI / 3} radius={2} fontSize={0.3} order={3}/>
+            <CurvedText content={"Asteroid Bennu"} position={[7, -4.25, -10]} curvature={Math.PI / 1.5} radius={2} fontSize={0.4} order={4}/>
         </>
     );
 }
