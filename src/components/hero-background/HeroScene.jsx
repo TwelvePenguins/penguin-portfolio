@@ -2,6 +2,7 @@ import europaMap from "../../assets/Europa_Test.jpg";
 import sunMap from "../../assets/Sun_Test_2k.jpg";
 import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useFrame, useLoader } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 import { TextureLoader } from "three";
 import Sun from "./Sun";
 import Europa from "./Europa";
@@ -10,14 +11,36 @@ import Orbit from "./Orbit";
 import * as THREE from "three";
 import CurvedText from "./CurvedText";
 
-export default function HeroScene() {
+export default function HeroScene({ animationMarkerRef }) {
     const [europaTexture, sunTexture, bennuTexture] = useLoader(TextureLoader, [
         europaMap,
         sunMap,
         bennuMap,
     ]);
 
-    useFrame((state) => {
+    const animationStarted = useRef(false);
+    const elapsedTime = useRef(0);
+    useEffect(() => {
+        const callback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio == 1) {
+                    animationStarted.current = true;
+                }
+            });
+        };
+        const observer = new IntersectionObserver(callback, {
+            rootMargin: "0px",
+            scrollMargin: "0px",
+            threshold: 1.0,
+        });
+        observer.observe(animationMarkerRef.current);
+
+        return () => {
+            observer.disconnect();
+        }
+    }, []);
+
+    useFrame((state, delta) => {
         state.camera.position.x = THREE.MathUtils.lerp(
             state.camera.position.x,
             state.pointer.x * 0.2,
@@ -29,6 +52,10 @@ export default function HeroScene() {
             state.pointer.y * 0.2,
             0.1,
         );
+
+        if (!animationStarted.current) return;
+
+        elapsedTime.current += delta;
     });
 
     const orbitRadiusList = [3.75, 5, 6, 7.5, 9.5];
@@ -74,9 +101,30 @@ export default function HeroScene() {
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}
-            <CurvedText content={"Sun"} position={[-2.75, 1.3, 0]} curvature={Math.PI / 10} radius={2} fontSize={0.2} order={0}/>
-            <CurvedText content={"Europa"} position={[9.4, 4, -5]} curvature={Math.PI / 3} radius={2} fontSize={0.3} order={3}/>
-            <CurvedText content={"Asteroid Bennu"} position={[7, -4.25, -10]} curvature={Math.PI / 1.5} radius={2} fontSize={0.4} order={4}/>
+            <CurvedText
+                content={"Sun"}
+                position={[-2.75, 1.3, 0]}
+                curvature={Math.PI / 10}
+                radius={2}
+                fontSize={0.2}
+                order={0}
+            />
+            <CurvedText
+                content={"Europa"}
+                position={[9.4, 4, -5]}
+                curvature={Math.PI / 3}
+                radius={2}
+                fontSize={0.3}
+                order={3}
+            />
+            <CurvedText
+                content={"Asteroid Bennu"}
+                position={[7, -4.25, -10]}
+                curvature={Math.PI / 1.5}
+                radius={2}
+                fontSize={0.4}
+                order={4}
+            />
         </>
     );
 }

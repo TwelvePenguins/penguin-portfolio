@@ -56,7 +56,7 @@ export default function CurvedText({
         return (
             <Text
                 text={letter}
-                color="ffffff"
+                color="white"
                 position={[xOffset, yOffset, 0]}
                 fontSize={fontSize}
                 key={index}

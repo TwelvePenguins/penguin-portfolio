@@ -14,6 +14,8 @@ function App() {
     const SCROLL_FADE_START = 0;
     const SCROLL_FADE_END = 50;
 
+    const animationMarkerRef = useRef();
+
     useEffect(() => {
         function handleScroll() {
             const progress = Math.min(
@@ -33,7 +35,7 @@ function App() {
         const lenis = new Lenis({
             autoRaf: true,
             smoothWheel: true,
-            lerp: 0.10,
+            lerp: 0.1,
             wheelMultiplier: 0.8,
         });
 
@@ -55,7 +57,6 @@ function App() {
                                 <ElementTile></ElementTile>
                                 <h1>uhan.</h1>
                             </div>
-                            
                         </header>
                         <p className="subtitle">
                             "We are made of star stuff" - Carl Sagan
@@ -67,9 +68,13 @@ function App() {
                     </div>
                 </div>
                 <div id="background">
-                    <HeroBackground eventSource={heroRef} />
+                    <HeroBackground
+                        eventSource={heroRef}
+                        animationMarkerRef={animationMarkerRef}
+                    />
                 </div>
             </main>
+            <div ref={animationMarkerRef} className="animation-marker"></div>
         </>
     );
 }
