@@ -20,9 +20,24 @@ export default function HeroScene({ animationMarkerRef }) {
 
     const animationStarted = useRef(false);
     const elapsedTime = useRef(0);
+    let orbitTransitionStart = 0;
+    let orbitTransitionEnd = 486;
+    let orbitOpacity = useRef(0);
+    const pastEntries = [];
+
     useEffect(() => {
         const callback = (entries) => {
-            entries.forEach(entry => {
+            if (
+                pastEntries.length === 0 &&
+                entries[0].isIntersecting === false
+            ) {
+                const domRect =
+                    animationMarkerRef.current.getBoundingClientRect();
+                orbitTransitionEnd = domRect.top - window.innerHeight;
+                console.log(orbitTransitionEnd);
+                pastEntries.push(entries[0]);
+            }
+            entries.forEach((entry) => {
                 if (entry.isIntersecting && entry.intersectionRatio == 1) {
                     animationStarted.current = true;
                 }
@@ -37,10 +52,11 @@ export default function HeroScene({ animationMarkerRef }) {
 
         return () => {
             observer.disconnect();
-        }
+        };
     }, []);
 
     useFrame((state, delta) => {
+        //For the parallax effect as pointer moves
         state.camera.position.x = THREE.MathUtils.lerp(
             state.camera.position.x,
             state.pointer.x * 0.2,
@@ -53,6 +69,21 @@ export default function HeroScene({ animationMarkerRef }) {
             0.1,
         );
 
+        //For orbit animation
+        const fadeProgress = THREE.MathUtils.clamp(
+            (window.scrollY - orbitTransitionStart) /
+                (orbitTransitionEnd - orbitTransitionStart),
+            0,
+            1,
+        );
+
+        orbitOpacity.current = THREE.MathUtils.lerp(
+            orbitOpacity.current,
+            fadeProgress,
+            0.08,
+        );
+
+        //For animation triggered after scroll to threshold
         if (!animationStarted.current) return;
 
         elapsedTime.current += delta;
@@ -85,6 +116,7 @@ export default function HeroScene({ animationMarkerRef }) {
                 color={color}
                 key={planetPosition.join(",")}
                 index={i}
+                opacity={orbitOpacity}
             />,
         );
     }
