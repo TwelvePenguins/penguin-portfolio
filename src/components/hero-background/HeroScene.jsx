@@ -132,6 +132,34 @@ export default function HeroScene({ animationMarkerRef }) {
         if (!animationStarted.current) return;
 
         elapsedTime.current += delta;
+
+        if (elapsedTime.current >= 0.25 && elapsedTime.current <= 1.75) {
+            const progress = THREE.MathUtils.clamp(
+                (elapsedTime.current - 0.75) / 1.5,
+                0,
+                1,
+            );
+
+            function eased(t) {
+                return t ** 2.5;
+            } 
+
+            setOrbitDetails(
+                orbitDetails.map((orbit) => {
+                    let orbitRadius = THREE.MathUtils.lerp(orbit.orbitRadius, 0, eased(progress));
+                    let planetRadius = THREE.MathUtils.lerp(orbit.planetRadius, 0, eased(progress));
+                    let planetPositionX = THREE.MathUtils.lerp(orbit.planetPositionXY[0], -4, eased(progress));
+                    let planetPositionY= THREE.MathUtils.lerp(orbit.planetPositionXY[1], 0, eased(progress));
+
+                    return {
+                        orbitRadius, 
+                        planetRadius,
+                        planetPositionXY: [planetPositionX, planetPositionY],
+                        color: orbit.color,
+                    }
+                }),
+            );
+        }
     });
 
     return (
