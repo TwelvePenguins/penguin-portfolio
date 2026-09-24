@@ -2,7 +2,7 @@ import europaMap from "../../assets/Europa_Test.jpg";
 import sunMap from "../../assets/Sun_Test_2k.jpg";
 import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import Sun from "./Sun";
 import Europa from "./Europa";
@@ -20,11 +20,10 @@ export default function HeroScene({ animationMarkerRef }) {
 
     const animationStarted = useRef(false);
     const elapsedTime = useRef(0);
+    const pastEntries = [];
     let orbitTransitionStart = 0;
     let orbitTransitionEnd = 486;
     let orbitOpacity = useRef(0);
-    const pastEntries = [];
-
     useEffect(() => {
         const callback = (entries) => {
             if (
@@ -54,6 +53,52 @@ export default function HeroScene({ animationMarkerRef }) {
             observer.disconnect();
         };
     }, []);
+
+    const [orbitDetails, setOrbitDetails] = useState([
+        {
+            orbitRadius: 3.75,
+            planetRadius: 0.15,
+            planetPositionXY: [-7, 3.2],
+            color: 0x8c8062,
+        },
+        {
+            orbitRadius: 5,
+            planetRadius: 0.2,
+            planetPositionXY: [-1.1, -3],
+            color: 0xb97a57,
+        },
+        {
+            orbitRadius: 6,
+            planetRadius: 0.3,
+            planetPositionXY: [0.4, 2.4],
+            color: 0x4f7a5c,
+        },
+        {
+            orbitRadius: 7.5,
+            planetRadius: 0.4,
+            planetPositionXY: [1.25, -4],
+            color: 0x824e4f,
+        },
+        {
+            orbitRadius: 9.5,
+            planetRadius: 1,
+            planetPositionXY: [4, 2.3],
+            color: 0xc99a22,
+        },
+    ]);
+
+    const orbits = [];
+
+    for (let i = 0; i < orbitDetails.length; i++) {
+        orbits.push(
+            <Orbit
+                orbitDetails={orbitDetails[i]}
+                key={orbitDetails[i].planetPositionXY.join(",")}
+                index={i}
+                opacity={orbitOpacity}
+            />,
+        );
+    }
 
     useFrame((state, delta) => {
         //For the parallax effect as pointer moves
@@ -88,38 +133,6 @@ export default function HeroScene({ animationMarkerRef }) {
 
         elapsedTime.current += delta;
     });
-
-    const orbitRadiusList = [3.75, 5, 6, 7.5, 9.5];
-    const planetRadiusList = [0.15, 0.2, 0.3, 0.4, 1];
-    const planetPositionXY = [
-        [-7, 3.2],
-        [-1.1, -3],
-        [0.4, 2.4],
-        [1.25, -4],
-        [4, 2.3],
-    ];
-    const colorList = [0x8c8062, 0xb97a57, 0x4f7a5c, 0x824e4f, 0xc99a22];
-
-    const orbits = [];
-
-    for (let i = 0; i < orbitRadiusList.length; i++) {
-        const orbitRadius = orbitRadiusList[i];
-        const planetRadius = planetRadiusList[i];
-        const planetPosition = planetPositionXY[i];
-        const color = colorList[i];
-
-        orbits.push(
-            <Orbit
-                orbitRadius={orbitRadius}
-                planetRadius={planetRadius}
-                planetPosition={planetPosition}
-                color={color}
-                key={planetPosition.join(",")}
-                index={i}
-                opacity={orbitOpacity}
-            />,
-        );
-    }
 
     return (
         <>

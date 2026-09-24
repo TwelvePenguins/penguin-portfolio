@@ -3,13 +3,12 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 export default function Orbit({
-    orbitRadius,
-    planetRadius,
-    planetPosition,
-    color,
+    orbitDetails,
     opacity,
     index,
 }) {
+
+    const { orbitRadius, planetRadius, planetPositionXY, color} = orbitDetails;
     const RING_Z = -2.5;
 
     function findRingX(ringZ, sunX, cameraZ) {
@@ -45,7 +44,7 @@ export default function Orbit({
                 <ringGeometry args={[orbitRadius - 0.02, orbitRadius, 64]} />
             </mesh>
             <mesh
-                position={[planetPosition[0], planetPosition[1], RING_Z]}
+                position={[planetPositionXY[0], planetPositionXY[1], RING_Z]}
                 material={material}
             >
                 <ringGeometry args={[planetRadius - 0.02, planetRadius, 64]} />
