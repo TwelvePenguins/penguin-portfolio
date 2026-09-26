@@ -170,6 +170,11 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2, 0, 0]}
                 target-position={[10, 0, 0]}
             />
+            <directionalLight
+                color="orange"
+                position={[-2.5, 0, 0]}
+                target-position={[0, 0, 0]}
+            />
             <Sun texture={sunTexture} />
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
