@@ -20,21 +20,21 @@ export default function HeroScene({ animationMarkerRef }) {
 
     const animationStarted = useRef(false);
     const elapsedTime = useRef(0);
-    const pastEntries = [];
+    const pastEntries = useRef([]);
     let orbitTransitionStart = 0;
     let orbitTransitionEnd = 486;
     let orbitOpacity = useRef(0);
     useEffect(() => {
         const callback = (entries) => {
             if (
-                pastEntries.length === 0 &&
+                pastEntries.current.length === 0 &&
                 entries[0].isIntersecting === false
             ) {
                 const domRect =
                     animationMarkerRef.current.getBoundingClientRect();
                 orbitTransitionEnd = domRect.top - window.innerHeight;
                 console.log(orbitTransitionEnd);
-                pastEntries.push(entries[0]);
+                pastEntries.current.push(entries[0]);
             }
             entries.forEach((entry) => {
                 if (entry.isIntersecting && entry.intersectionRatio == 1) {
@@ -54,7 +54,7 @@ export default function HeroScene({ animationMarkerRef }) {
         };
     }, []);
 
-    const [orbitDetails, setOrbitDetails] = useState([
+    const initialOrbitDetails = [
         {
             orbitRadius: 3.75,
             planetRadius: 0.15,
@@ -85,33 +85,53 @@ export default function HeroScene({ animationMarkerRef }) {
             planetPositionXY: [4, 2.3],
             color: 0xc99a22,
         },
-    ]);
+    ];
+    const orbitDetails = useRef(initialOrbitDetails);
 
     const orbits = [];
 
-    for (let i = 0; i < orbitDetails.length; i++) {
+    for (let i = 0; i < orbitDetails.current.length; i++) {
         orbits.push(
             <Orbit
-                orbitDetails={orbitDetails[i]}
-                key={orbitDetails[i].planetPositionXY.join(",")}
+                orbitDetails={orbitDetails}
+                key={i}
                 index={i}
                 opacity={orbitOpacity}
             />,
         );
     }
 
+    function easedIn(t) {
+        return t ** 2;
+    }
+
+    function easedOut(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animationProgress(start, end, timerRef) {
+        const duration = end - start;
+        return THREE.MathUtils.clamp(
+            (timerRef.current - start) / duration,
+            0,
+            1,
+        );
+    }
+
     useFrame((state, delta) => {
         //For the parallax effect as pointer moves
-        state.camera.position.x = THREE.MathUtils.lerp(
+        state.camera.position.x = THREE.MathUtils.damp(
             state.camera.position.x,
             state.pointer.x * 0.2,
-            0.1,
+            10,
+            delta,
         );
 
-        state.camera.position.y = THREE.MathUtils.lerp(
+        state.camera.position.y = THREE.MathUtils.damp(
             state.camera.position.y,
             state.pointer.y * 0.2,
-            0.1,
+            10,
+            delta,
         );
 
         //For orbit animation
@@ -122,10 +142,11 @@ export default function HeroScene({ animationMarkerRef }) {
             1,
         );
 
-        orbitOpacity.current = THREE.MathUtils.lerp(
+        orbitOpacity.current = THREE.MathUtils.damp(
             orbitOpacity.current,
             fadeProgress,
-            0.08,
+            10,
+            delta
         );
 
         //For animation triggered after scroll to threshold
@@ -134,71 +155,61 @@ export default function HeroScene({ animationMarkerRef }) {
         elapsedTime.current += delta;
 
         if (elapsedTime.current >= 0.25 && elapsedTime.current <= 1.75) {
-            const progress = THREE.MathUtils.clamp(
-                (elapsedTime.current - 0.25) / 1.5,
-                0,
-                1,
-            );
+            const reboundProgress = animationProgress(0.25, 0.4, elapsedTime);
+            const collapseProgress = animationProgress(0.4, 1.75, elapsedTime);
 
-            function easedIn(t) {
-                return t ** 2.5;
-            }
+            const easeInProgress = easedIn(collapseProgress);
+            const easeOutProgress = easedOut(reboundProgress);
 
-            function easedOut(t) {
-                return 1 - Math.pow(1 - t, 3);
-            }
-            console.log(progress);
-            setOrbitDetails(
-                orbitDetails.map((orbit) => {
-                    let orbitRadius;
-                    let planetRadius;
-                    let planetPositionX;
-                    let planetPositionY;
+            orbitDetails.current = initialOrbitDetails.map((orbit) => {
+                let orbitRadius;
+                let planetRadius;
+                let planetPositionX;
+                let planetPositionY;
 
-                    if (progress < 0.15) {
-                        orbitRadius = THREE.MathUtils.lerp(
-                            orbit.orbitRadius,
-                            orbit.orbitRadius + 0.02,
-                            easedOut(progress),
-                        );
-                        planetRadius = orbit.planetRadius;
-                        planetPositionX = THREE.MathUtils.lerp(
-                            orbit.planetPositionXY[0],
-                            orbit.planetPositionXY[0] + 0.02,
-                            easedOut(progress),
-                        );
-                        planetPositionY = orbit.planetPositionXY[1];
-                    } else {
-                        orbitRadius = THREE.MathUtils.lerp(
-                            orbit.orbitRadius,
-                            0,
-                            easedIn(progress),
-                        );
-                        planetRadius = THREE.MathUtils.lerp(
-                            orbit.planetRadius,
-                            0,
-                            easedIn(progress),
-                        );
-                        planetPositionX = THREE.MathUtils.lerp(
-                            orbit.planetPositionXY[0],
-                            -4,
-                            easedIn(progress),
-                        );
-                        planetPositionY = THREE.MathUtils.lerp(
-                            orbit.planetPositionXY[1],
-                            0,
-                            easedIn(progress),
-                        );
-                    }
+                if (reboundProgress < 1) {
+                    orbitRadius = THREE.MathUtils.lerp(
+                        orbit.orbitRadius,
+                        orbit.orbitRadius + 0.02,
+                        easeOutProgress,
+                    );
+                    planetRadius = orbit.planetRadius;
+                    planetPositionX = THREE.MathUtils.lerp(
+                        orbit.planetPositionXY[0],
+                        orbit.planetPositionXY[0] + 0.02,
+                        easeOutProgress,
+                    );
+                    planetPositionY = orbit.planetPositionXY[1];
+                } else {
+                    orbitRadius = THREE.MathUtils.lerp(
+                        orbit.orbitRadius + 0.02,
+                        0,
+                        easeInProgress,
+                    );
+                    planetRadius = THREE.MathUtils.lerp(
+                        orbit.planetRadius,
+                        0,
+                        easeInProgress,
+                    );
+                    planetPositionX = THREE.MathUtils.lerp(
+                        orbit.planetPositionXY[0] + 0.02,
+                        -4,
+                        easeInProgress,
+                    );
+                    planetPositionY = THREE.MathUtils.lerp(
+                        orbit.planetPositionXY[1],
+                        0,
+                        easeInProgress,
+                    );
+                }
 
-                    return {
-                        orbitRadius,
-                        planetRadius,
-                        planetPositionXY: [planetPositionX, planetPositionY],
-                        color: orbit.color,
-                    };
-                }),
-            );
+                return {
+                    orbitRadius,
+                    planetRadius,
+                    planetPositionXY: [planetPositionX, planetPositionY],
+                    color: orbit.color,
+                };
+            });
         }
     });
 
