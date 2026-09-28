@@ -2,7 +2,7 @@ import europaMap from "../../assets/Europa_Test.jpg";
 import sunMap from "../../assets/Sun_Test_2k.jpg";
 import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { TextureLoader } from "three";
 import Sun from "./Sun";
 import Europa from "./Europa";
