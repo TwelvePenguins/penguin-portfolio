@@ -87,7 +87,7 @@ export default function HeroScene({ animationMarkerRef }) {
         },
     ];
     const orbitDetails = useRef(initialOrbitDetails);
-
+    const sunScale = useRef(1);
     const orbits = [];
 
     for (let i = 0; i < orbitDetails.current.length; i++) {
@@ -154,7 +154,7 @@ export default function HeroScene({ animationMarkerRef }) {
 
         elapsedTime.current += delta;
 
-        if (elapsedTime.current >= 0.25 && elapsedTime.current <= 1.75) {
+        if (elapsedTime.current >= 0.25) {
             const reboundProgress = animationProgress(0.25, 0.4, elapsedTime);
             const collapseProgress = animationProgress(0.4, 1.75, elapsedTime);
 
@@ -210,6 +210,12 @@ export default function HeroScene({ animationMarkerRef }) {
                     color: orbit.color,
                 };
             });
+
+            sunScale.current = THREE.MathUtils.lerp(
+                1, 
+                0.1, 
+                easedOut(collapseProgress),
+            )
         }
     });
 
@@ -226,7 +232,7 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2.5, 0, 0]}
                 target-position={[0, 0, 0]}
             />
-            <Sun texture={sunTexture} />
+            <Sun texture={sunTexture} scale={sunScale}/>
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}
