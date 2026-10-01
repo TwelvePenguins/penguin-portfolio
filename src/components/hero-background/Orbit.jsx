@@ -7,6 +7,7 @@ export default function Orbit({ orbitDetails, opacity, index }) {
         orbitDetails.current[index];
     const planetRef = useRef();
     const orbitRef = useRef();
+    const groupRef = useRef();
     const RING_Z = -2.5;
 
     function findRingX(ringZ, sunX, cameraZ) {
@@ -39,10 +40,12 @@ export default function Orbit({ orbitDetails, opacity, index }) {
 
         planetRef.current.position.x = current.planetPositionXY[0];
         planetRef.current.position.y = current.planetPositionXY[1];
+
+        groupRef.current.position.x = current.orbitTranslationX ?? 0;
     });
 
     return (
-        <>
+        <group ref={groupRef}>
             <mesh
                 position={[findRingX(RING_Z, -2.5, 3) - 0.5, 0, RING_Z]}
                 material={material}
@@ -57,6 +60,6 @@ export default function Orbit({ orbitDetails, opacity, index }) {
             >
                 <ringGeometry args={[planetRadius - 0.02, planetRadius, 64]} />
             </mesh>
-        </>
+        </group>
     );
 }

@@ -166,6 +166,7 @@ export default function HeroScene({ animationMarkerRef }) {
                 let planetRadius;
                 let planetPositionX;
                 let planetPositionY;
+                let orbitTranslationX = 0;
 
                 if (reboundProgress < 1) {
                     orbitRadius = THREE.MathUtils.lerp(
@@ -201,6 +202,11 @@ export default function HeroScene({ animationMarkerRef }) {
                         0,
                         easeInProgress,
                     );
+                    orbitTranslationX = THREE.MathUtils.lerp(
+                        0,
+                        0.5,
+                        easeInProgress,
+                    )
                 }
 
                 return {
@@ -208,6 +214,7 @@ export default function HeroScene({ animationMarkerRef }) {
                     planetRadius,
                     planetPositionXY: [planetPositionX, planetPositionY],
                     color: orbit.color,
+                    orbitTranslationX,
                 };
             });
 
