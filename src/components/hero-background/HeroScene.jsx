@@ -43,7 +43,7 @@ export default function HeroScene({ animationMarkerRef }) {
             });
         };
         const observer = new IntersectionObserver(callback, {
-            rootMargin: "0px",
+            rootMargin: "0px 0px 2px 0px",
             scrollMargin: "0px",
             threshold: 1.0,
         });
