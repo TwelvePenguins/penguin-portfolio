@@ -43,7 +43,7 @@ export default function HeroScene({ animationMarkerRef }) {
             });
         };
         const observer = new IntersectionObserver(callback, {
-            rootMargin: "0px",
+            rootMargin: "0px 0px 2px 0px",
             scrollMargin: "0px",
             threshold: 1.0,
         });
@@ -88,6 +88,7 @@ export default function HeroScene({ animationMarkerRef }) {
     ];
     const orbitDetails = useRef(initialOrbitDetails);
     const sunScale = useRef(1);
+    const sunOpacity = useRef(1);
     const orbits = [];
 
     for (let i = 0; i < orbitDetails.current.length; i++) {
@@ -223,6 +224,12 @@ export default function HeroScene({ animationMarkerRef }) {
                 0.1, 
                 easedOut(collapseProgress),
             )
+
+            sunOpacity.current = THREE.MathUtils.lerp(
+                1, 
+                0, 
+                easedOut(collapseProgress),
+            )
         }
     });
 
@@ -239,7 +246,7 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2.5, 0, 0]}
                 target-position={[0, 0, 0]}
             />
-            <Sun texture={sunTexture} scale={sunScale}/>
+            <Sun texture={sunTexture} scale={sunScale} textureOpacity={sunOpacity}/>
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}

@@ -1,11 +1,15 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 
-export default function Sun({ texture, scale }) {
+export default function Sun({ texture, scale, textureOpacity }) {
     const sun = useRef();
+    const sunTexturedMat = useRef();
+    const sunGlowOrbMat = useRef();
 
     useFrame(() => {
         sun.current.scale.setScalar(scale.current);
+        sunTexturedMat.current.opacity = textureOpacity.current;
+        sunGlowOrbMat.current.opacity = 1 - textureOpacity.current;
     });
 
     return (
@@ -13,13 +17,26 @@ export default function Sun({ texture, scale }) {
             <mesh>
                 <sphereGeometry args={[1, 32, 32]} />
                 <meshStandardMaterial
-                    color="#ff9632"
+                    color="#ffddbe"
                     map={texture}
-                    emissive={0xffffff}
+                    emissive={0xffddbe}
                     emissiveMap={texture}
-                    // HDR emission lets the sun pass the bloom threshold.
                     emissiveIntensity={3}
                     toneMapped={false}
+                    transparent
+                    opacity={1}
+                    ref={sunTexturedMat}
+                />
+            </mesh>
+            <mesh>
+                <sphereGeometry args={[1, 32, 32]} />
+                <meshStandardMaterial
+                    emissive={"#ff7c02"}
+                    emissiveIntensity={4}
+                    toneMapped={false}
+                    transparent
+                    opacity={0}
+                    ref={sunGlowOrbMat}
                 />
             </mesh>
         </group>
