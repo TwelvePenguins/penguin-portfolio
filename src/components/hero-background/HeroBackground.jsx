@@ -1,4 +1,6 @@
 import { Canvas } from "@react-three/fiber";
+import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
+import { ToneMappingMode } from "postprocessing";
 import HeroScene from "./HeroScene";
 
 export default function HeroBackground({ eventSource, animationMarkerRef }) {
@@ -8,7 +10,17 @@ export default function HeroBackground({ eventSource, animationMarkerRef }) {
             eventSource={eventSource}
             eventPrefix="client"
         >
-            <HeroScene animationMarkerRef={animationMarkerRef}/>
+            <HeroScene animationMarkerRef={animationMarkerRef} />
+            <EffectComposer>
+                <Bloom
+                    mipmapBlur
+                    luminanceThreshold={1}
+                    luminanceSmoothing={0.2}
+                    intensity={0.8}
+                />
+                {/* Map HDR colors to the display after extracting the bloom. */}
+                <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+            </EffectComposer>
         </Canvas>
     );
 }
