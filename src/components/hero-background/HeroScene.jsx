@@ -119,22 +119,7 @@ export default function HeroScene({ animationMarkerRef }) {
         );
     }
 
-    useFrame((state, delta) => {
-        //For the parallax effect as pointer moves
-        state.camera.position.x = THREE.MathUtils.damp(
-            state.camera.position.x,
-            state.pointer.x * 0.2,
-            10,
-            delta,
-        );
-
-        state.camera.position.y = THREE.MathUtils.damp(
-            state.camera.position.y,
-            state.pointer.y * 0.2,
-            10,
-            delta,
-        );
-
+    useFrame((_, delta) => {
         //For orbit animation
         const fadeProgress = THREE.MathUtils.clamp(
             (window.scrollY - orbitTransitionStart) /
@@ -147,7 +132,7 @@ export default function HeroScene({ animationMarkerRef }) {
             orbitOpacity.current,
             fadeProgress,
             10,
-            delta
+            delta,
         );
 
         //For animation triggered after scroll to threshold
@@ -207,7 +192,7 @@ export default function HeroScene({ animationMarkerRef }) {
                         0,
                         0.5,
                         easeInProgress,
-                    )
+                    );
                 }
 
                 return {
@@ -220,16 +205,16 @@ export default function HeroScene({ animationMarkerRef }) {
             });
 
             sunScale.current = THREE.MathUtils.lerp(
-                1, 
-                0.1, 
+                1,
+                0.1,
                 easedOut(collapseProgress),
-            )
+            );
 
             sunOpacity.current = THREE.MathUtils.lerp(
-                1, 
-                0, 
+                1,
+                0,
                 easedOut(collapseProgress),
-            )
+            );
         }
     });
 
@@ -246,7 +231,11 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2.5, 0, 0]}
                 target-position={[0, 0, 0]}
             />
-            <Sun texture={sunTexture} scale={sunScale} textureOpacity={sunOpacity}/>
+            <Sun
+                texture={sunTexture}
+                scale={sunScale}
+                textureOpacity={sunOpacity}
+            />
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}

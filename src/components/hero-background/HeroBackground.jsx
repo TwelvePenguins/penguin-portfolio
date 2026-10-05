@@ -1,7 +1,12 @@
 import { Canvas } from "@react-three/fiber";
-import { Bloom, EffectComposer, ToneMapping } from "@react-three/postprocessing";
+import {
+    Bloom,
+    EffectComposer,
+    ToneMapping,
+} from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 import HeroScene from "./HeroScene";
+import CameraRig from "./CameraRig";
 
 export default function HeroBackground({ eventSource, animationMarkerRef }) {
     return (
@@ -10,6 +15,7 @@ export default function HeroBackground({ eventSource, animationMarkerRef }) {
             eventSource={eventSource}
             eventPrefix="client"
         >
+            <CameraRig />
             <HeroScene animationMarkerRef={animationMarkerRef} />
             <EffectComposer>
                 <Bloom
