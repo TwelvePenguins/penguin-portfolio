@@ -1,5 +1,6 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import { easedIn, easedOut } from "./animationUtils";
 import * as THREE from "three";
 
 export default function Orbit({
@@ -25,14 +26,6 @@ export default function Orbit({
         const lamda = (cameraZ - ringZ) / cameraZ;
         const mu = sunX * lamda;
         return mu;
-    }
-
-    function easedIn(t) {
-        return t ** 2;
-    }
-
-    function easedOut(t) {
-        return 1 - Math.pow(1 - t, 3);
     }
 
     const material = useMemo(() => {

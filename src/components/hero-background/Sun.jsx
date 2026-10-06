@@ -1,15 +1,28 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+import { easedOut } from "./animationUtils";
 
-export default function Sun({ texture, scale, textureOpacity }) {
+export default function Sun({ texture, animationProgress }) {
     const sun = useRef();
     const sunTexturedMat = useRef();
     const sunGlowOrbMat = useRef();
 
     useFrame(() => {
-        sun.current.scale.setScalar(scale.current);
-        sunTexturedMat.current.opacity = textureOpacity.current;
-        sunGlowOrbMat.current.opacity = 1 - textureOpacity.current;
+        const scale = THREE.MathUtils.lerp(
+            1,
+            0.1,
+            easedOut(animationProgress.current.collapse),
+        );
+
+        const textureOpacity = THREE.MathUtils.lerp(
+            1,
+            0,
+            easedOut(animationProgress.current.collapse),
+        );
+        sun.current.scale.setScalar(scale);
+        sunTexturedMat.current.opacity = textureOpacity;
+        sunGlowOrbMat.current.opacity = 1 - textureOpacity;
     });
 
     return (

@@ -4,6 +4,7 @@ import bennuMap from "../../assets/Bennu_Test.jpg";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { TextureLoader } from "three";
+import { calcAnimationProgress } from "./animationUtils";
 import Sun from "./Sun";
 import Europa from "./Europa";
 import Bennu from "./Bennu";
@@ -90,8 +91,6 @@ export default function HeroScene({ animationMarkerRef }) {
         collapseRebound: 0,
     });
     const scrollProgress = useRef(0);
-    const sunScale = useRef(1);
-    const sunOpacity = useRef(1);
     const orbits = [];
 
     for (let i = 0; i < initialOrbitDetails.length; i++) {
@@ -106,23 +105,6 @@ export default function HeroScene({ animationMarkerRef }) {
         );
     }
 
-    function easedIn(t) {
-        return t ** 2;
-    }
-
-    function easedOut(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-
-    function calcAnimationProgress(start, end, timerRef) {
-        const duration = end - start;
-        return THREE.MathUtils.clamp(
-            (timerRef.current - start) / duration,
-            0,
-            1,
-        );
-    }
-
     useFrame((_, delta) => {
         //For orbit appearance scroll animation
         scrollProgress.current = THREE.MathUtils.clamp(
@@ -134,7 +116,6 @@ export default function HeroScene({ animationMarkerRef }) {
 
         //For animation triggered after scroll to threshold
         if (!animationStarted.current) return;
-
         elapsedTime.current += delta;
 
         animationProgress.current.collapse = calcAnimationProgress(
@@ -146,18 +127,6 @@ export default function HeroScene({ animationMarkerRef }) {
             0.25,
             0.4,
             elapsedTime,
-        );
-
-        sunScale.current = THREE.MathUtils.lerp(
-            1,
-            0.1,
-            easedOut(animationProgress.current.collapse),
-        );
-
-        sunOpacity.current = THREE.MathUtils.lerp(
-            1,
-            0,
-            easedOut(animationProgress.current.collapse),
         );
     });
 
@@ -174,11 +143,7 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2.5, 0, 0]}
                 target-position={[0, 0, 0]}
             />
-            <Sun
-                texture={sunTexture}
-                scale={sunScale}
-                textureOpacity={sunOpacity}
-            />
+            <Sun texture={sunTexture} animationProgress={animationProgress} />
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
             {orbits}
