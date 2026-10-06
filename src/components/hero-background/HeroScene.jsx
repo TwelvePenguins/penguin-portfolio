@@ -21,9 +21,8 @@ export default function HeroScene({ animationMarkerRef }) {
     const animationStarted = useRef(false);
     const elapsedTime = useRef(0);
     const pastEntries = useRef([]);
-    let orbitTransitionStart = 0;
-    let orbitTransitionEnd = 486;
-    let orbitOpacity = useRef(0);
+    const orbitTransitionStart = 0;
+    const orbitTransitionEnd = useRef(486);
     useEffect(() => {
         const callback = (entries) => {
             if (
@@ -32,8 +31,8 @@ export default function HeroScene({ animationMarkerRef }) {
             ) {
                 const domRect =
                     animationMarkerRef.current.getBoundingClientRect();
-                orbitTransitionEnd = domRect.top - window.innerHeight;
-                console.log(orbitTransitionEnd);
+                orbitTransitionEnd.current = domRect.top - window.innerHeight;
+                console.log(orbitTransitionEnd.current);
                 pastEntries.current.push(entries[0]);
             }
             entries.forEach((entry) => {
@@ -86,18 +85,23 @@ export default function HeroScene({ animationMarkerRef }) {
             color: 0xc99a22,
         },
     ];
-    const orbitDetails = useRef(initialOrbitDetails);
+    const animationProgress = useRef({
+        collapse: 0,
+        collapseRebound: 0,
+    });
+    const scrollProgress = useRef(0);
     const sunScale = useRef(1);
     const sunOpacity = useRef(1);
     const orbits = [];
 
-    for (let i = 0; i < orbitDetails.current.length; i++) {
+    for (let i = 0; i < initialOrbitDetails.length; i++) {
         orbits.push(
             <Orbit
-                orbitDetails={orbitDetails}
+                orbitDetail={initialOrbitDetails[i]}
                 key={i}
                 index={i}
-                opacity={orbitOpacity}
+                scrollProgress={scrollProgress}
+                animationProgress={animationProgress}
             />,
         );
     }
@@ -110,7 +114,7 @@ export default function HeroScene({ animationMarkerRef }) {
         return 1 - Math.pow(1 - t, 3);
     }
 
-    function animationProgress(start, end, timerRef) {
+    function calcAnimationProgress(start, end, timerRef) {
         const duration = end - start;
         return THREE.MathUtils.clamp(
             (timerRef.current - start) / duration,
@@ -120,19 +124,12 @@ export default function HeroScene({ animationMarkerRef }) {
     }
 
     useFrame((_, delta) => {
-        //For orbit animation
-        const fadeProgress = THREE.MathUtils.clamp(
+        //For orbit appearance scroll animation
+        scrollProgress.current = THREE.MathUtils.clamp(
             (window.scrollY - orbitTransitionStart) /
-                (orbitTransitionEnd - orbitTransitionStart),
+                (orbitTransitionEnd.current - orbitTransitionStart),
             0,
             1,
-        );
-
-        orbitOpacity.current = THREE.MathUtils.damp(
-            orbitOpacity.current,
-            fadeProgress,
-            10,
-            delta,
         );
 
         //For animation triggered after scroll to threshold
@@ -140,82 +137,28 @@ export default function HeroScene({ animationMarkerRef }) {
 
         elapsedTime.current += delta;
 
-        if (elapsedTime.current >= 0.25) {
-            const reboundProgress = animationProgress(0.25, 0.4, elapsedTime);
-            const collapseProgress = animationProgress(0.4, 1.75, elapsedTime);
+        animationProgress.current.collapse = calcAnimationProgress(
+            0.4,
+            1.75,
+            elapsedTime,
+        );
+        animationProgress.current.collapseRebound = calcAnimationProgress(
+            0.25,
+            0.4,
+            elapsedTime,
+        );
 
-            const easeInProgress = easedIn(collapseProgress);
-            const easeOutProgress = easedOut(reboundProgress);
+        sunScale.current = THREE.MathUtils.lerp(
+            1,
+            0.1,
+            easedOut(animationProgress.current.collapse),
+        );
 
-            orbitDetails.current = initialOrbitDetails.map((orbit) => {
-                let orbitRadius;
-                let planetRadius;
-                let planetPositionX;
-                let planetPositionY;
-                let orbitTranslationX = 0;
-
-                if (reboundProgress < 1) {
-                    orbitRadius = THREE.MathUtils.lerp(
-                        orbit.orbitRadius,
-                        orbit.orbitRadius + 0.02,
-                        easeOutProgress,
-                    );
-                    planetRadius = orbit.planetRadius;
-                    planetPositionX = THREE.MathUtils.lerp(
-                        orbit.planetPositionXY[0],
-                        orbit.planetPositionXY[0] + 0.02,
-                        easeOutProgress,
-                    );
-                    planetPositionY = orbit.planetPositionXY[1];
-                } else {
-                    orbitRadius = THREE.MathUtils.lerp(
-                        orbit.orbitRadius + 0.02,
-                        0,
-                        easeInProgress,
-                    );
-                    planetRadius = THREE.MathUtils.lerp(
-                        orbit.planetRadius,
-                        0,
-                        easeInProgress,
-                    );
-                    planetPositionX = THREE.MathUtils.lerp(
-                        orbit.planetPositionXY[0] + 0.02,
-                        -4,
-                        easeInProgress,
-                    );
-                    planetPositionY = THREE.MathUtils.lerp(
-                        orbit.planetPositionXY[1],
-                        0,
-                        easeInProgress,
-                    );
-                    orbitTranslationX = THREE.MathUtils.lerp(
-                        0,
-                        0.5,
-                        easeInProgress,
-                    );
-                }
-
-                return {
-                    orbitRadius,
-                    planetRadius,
-                    planetPositionXY: [planetPositionX, planetPositionY],
-                    color: orbit.color,
-                    orbitTranslationX,
-                };
-            });
-
-            sunScale.current = THREE.MathUtils.lerp(
-                1,
-                0.1,
-                easedOut(collapseProgress),
-            );
-
-            sunOpacity.current = THREE.MathUtils.lerp(
-                1,
-                0,
-                easedOut(collapseProgress),
-            );
-        }
+        sunOpacity.current = THREE.MathUtils.lerp(
+            1,
+            0,
+            easedOut(animationProgress.current.collapse),
+        );
     });
 
     return (

@@ -1,5 +1,5 @@
 nav {
-    background-color: black;
+    background-color: rbga(0, 0, 0, 0);
     display: flex;
     justify-content: space-between;
     align-items: center;
