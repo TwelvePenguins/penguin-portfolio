@@ -4,44 +4,77 @@ import { useRef, useState } from "react";
 import * as THREE from "three";
 
 export default function CurvedText({
-    position,
-    curvature,
-    radius,
-    content,
-    fontSize,
-    order,
+    details,
+    animationProgress,
+    scrollProgress,
 }) {
     //Curvature in radians, up to +/- pi
     //Curvature cannot be 0
     //Content length cannot be 1
+    const {
+        content,
+        position,
+        celestialPos,
+        curvature,
+        radius,
+        fontSize,
+        order,
+    } = details;
+    const ringOpacity = useRef(0);
+    const groupRef = useRef();
+    const letterRefs = useRef([]);
+    const opacity = useRef(0);
 
-    let ringOpacity = useRef(0);
-    const FADE_START = 0;
-    const FADE_END = 486;
-    const [opacity, setOpacity] = useState(0);
-
-    useFrame(() => {
-        const fadeProgress = THREE.MathUtils.clamp(
-            (window.scrollY - FADE_START) / (FADE_END - FADE_START),
-            0,
-            1,
-        );
-
-        ringOpacity.current = THREE.MathUtils.lerp(
+    useFrame((_, delta) => {
+        ringOpacity.current = THREE.MathUtils.damp(
             ringOpacity.current,
-            fadeProgress,
-            0.08,
+            scrollProgress.current,
+            10,
+            delta,
         );
 
         const delay = order * 0.12;
 
-        setOpacity(
-            THREE.MathUtils.clamp(
-                (ringOpacity.current - delay) / (1 - delay),
-                0,
-                1,
-            ),
+        opacity.current = THREE.MathUtils.clamp(
+            (ringOpacity.current - delay) / (1 - delay),
+            0,
+            1,
         );
+
+        if (animationProgress.current.collapse > 0) {
+            opacity.current = THREE.MathUtils.lerp(
+                1,
+                0,
+                animationProgress.current.collapse,
+            );
+        }
+
+        let groupScale = THREE.MathUtils.lerp(
+            1,
+            0,
+            animationProgress.current.collapse,
+        );
+
+        let positionX = THREE.MathUtils.lerp(
+            position[0],
+            celestialPos[0],
+            animationProgress.current.collapse,
+        );
+
+        let positionY = THREE.MathUtils.lerp(
+            position[1],
+            celestialPos[1],
+            animationProgress.current.collapse,
+        );
+
+        groupRef.current.scale.setScalar(groupScale);
+        groupRef.current.position.x = positionX;
+        groupRef.current.position.y = positionY;
+        letterRefs.current.forEach((letter) => {
+            if (letter) {
+                letter.fillOpacity = opacity.current;
+            }
+        });
     });
 
     const textArray = content.split("");
@@ -63,10 +96,16 @@ export default function CurvedText({
                 rotation={[0, 0, -angleToPoint]}
                 anchorX={"center"}
                 anchorY={"middle"}
-                fillOpacity={opacity}
+                ref={(element) => {
+                    letterRefs.current[index] = element;
+                }}
             ></Text>
         );
     });
 
-    return <group position={position}>{letterElements}</group>;
+    return (
+        <group position={position} ref={groupRef}>
+            {letterElements}
+        </group>
+    );
 }

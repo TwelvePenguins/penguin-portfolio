@@ -86,24 +86,40 @@ export default function HeroScene({ animationMarkerRef }) {
             color: 0xc99a22,
         },
     ];
+    const curvedTextDetails = [
+        {
+            content: "Sun",
+            position: [-2.75, 1.3, 0],
+            celestialPos: [-2.5, 0, 0],
+            curvature: Math.PI / 10,
+            radius: 2,
+            fontSize: 0.2,
+            order: 0,
+        },
+        {
+            content: "Europa",
+            position: [9.4, 4, -5],
+            celestialPos: [9, 2.5, -5],
+            curvature: Math.PI / 3,
+            radius: 2,
+            fontSize: 0.3,
+            order: 3,
+        },
+        {
+            content: "Asteroid Bennu",
+            position: [7, -4.25, -10],
+            celestialPos: [7, -6, -10],
+            curvature: Math.PI / 1.5,
+            radius: 2,
+            fontSize: 0.4,
+            order: 4,
+        },
+    ];
     const animationProgress = useRef({
         collapse: 0,
         collapseRebound: 0,
     });
     const scrollProgress = useRef(0);
-    const orbits = [];
-
-    for (let i = 0; i < initialOrbitDetails.length; i++) {
-        orbits.push(
-            <Orbit
-                orbitDetail={initialOrbitDetails[i]}
-                key={i}
-                index={i}
-                scrollProgress={scrollProgress}
-                animationProgress={animationProgress}
-            />,
-        );
-    }
 
     useFrame((_, delta) => {
         //For orbit appearance scroll animation
@@ -146,31 +162,27 @@ export default function HeroScene({ animationMarkerRef }) {
             <Sun texture={sunTexture} animationProgress={animationProgress} />
             <Europa texture={europaTexture} />
             <Bennu texture={bennuTexture} />
-            {orbits}
-            <CurvedText
-                content={"Sun"}
-                position={[-2.75, 1.3, 0]}
-                curvature={Math.PI / 10}
-                radius={2}
-                fontSize={0.2}
-                order={0}
-            />
-            <CurvedText
-                content={"Europa"}
-                position={[9.4, 4, -5]}
-                curvature={Math.PI / 3}
-                radius={2}
-                fontSize={0.3}
-                order={3}
-            />
-            <CurvedText
-                content={"Asteroid Bennu"}
-                position={[7, -4.25, -10]}
-                curvature={Math.PI / 1.5}
-                radius={2}
-                fontSize={0.4}
-                order={4}
-            />
+            {initialOrbitDetails.map((detail, index) => {
+                return (
+                    <Orbit
+                        orbitDetail={detail}
+                        key={index}
+                        index={index}
+                        scrollProgress={scrollProgress}
+                        animationProgress={animationProgress}
+                    />
+                );
+            })}
+            {curvedTextDetails.map((detail) => {
+                return (
+                    <CurvedText
+                        key={detail.content}
+                        details={detail}
+                        animationProgress={animationProgress}
+                        scrollProgress={scrollProgress}
+                    />
+                );
+            })}
         </>
     );
 }
