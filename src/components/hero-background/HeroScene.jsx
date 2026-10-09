@@ -160,8 +160,8 @@ export default function HeroScene({ animationMarkerRef }) {
                 target-position={[0, 0, 0]}
             />
             <Sun texture={sunTexture} animationProgress={animationProgress} />
-            <Europa texture={europaTexture} />
-            <Bennu texture={bennuTexture} />
+            <Europa texture={europaTexture} animationProgress={animationProgress}/>
+            <Bennu texture={bennuTexture} animationProgress={animationProgress}/>
             {initialOrbitDetails.map((detail, index) => {
                 return (
                     <Orbit

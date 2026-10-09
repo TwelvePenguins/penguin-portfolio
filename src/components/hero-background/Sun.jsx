@@ -45,7 +45,7 @@ export default function Sun({ texture, animationProgress }) {
                 <sphereGeometry args={[1, 32, 32]} />
                 <meshStandardMaterial
                     emissive={"#ff7c02"}
-                    emissiveIntensity={4}
+                    emissiveIntensity={7}
                     toneMapped={false}
                     transparent
                     opacity={0}
