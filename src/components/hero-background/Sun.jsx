@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { easedOut } from "./animationUtils";
+import { easedIn, easedOut } from "./animationUtils";
 
 export default function Sun({ texture, animationProgress }) {
     const sun = useRef();
@@ -9,20 +9,43 @@ export default function Sun({ texture, animationProgress }) {
     const sunGlowOrbMat = useRef();
 
     useFrame(() => {
-        const scale = THREE.MathUtils.lerp(
-            1,
-            0.1,
-            easedOut(animationProgress.current.collapse),
-        );
+        let scale = 1;
+        if (animationProgress.current.collapse < 1) {
+            scale = THREE.MathUtils.lerp(
+                1,
+                0.1,
+                easedOut(animationProgress.current.collapse),
+            );
 
-        const textureOpacity = THREE.MathUtils.lerp(
-            1,
-            0,
-            easedOut(animationProgress.current.collapse),
-        );
+            const textureOpacity = THREE.MathUtils.lerp(
+                1,
+                0,
+                easedOut(animationProgress.current.collapse),
+            );
+
+            sunTexturedMat.current.opacity = textureOpacity;
+            sunGlowOrbMat.current.opacity = 1 - textureOpacity;
+        } else {
+            if (animationProgress.current.pulse * 2 < 1) {
+                scale = THREE.MathUtils.lerp(
+                    0.1,
+                    0.15,
+                    easedOut(animationProgress.current.pulse * 2),
+                );
+            } else {
+                const clampedProgress = THREE.MathUtils.clamp(
+                    animationProgress.current.pulse * 2 - 1,
+                    0,
+                    1,
+                );
+                scale = THREE.MathUtils.lerp(
+                    0.15,
+                    0.1,
+                    easedIn(clampedProgress),
+                );
+            }
+        }
         sun.current.scale.setScalar(scale);
-        sunTexturedMat.current.opacity = textureOpacity;
-        sunGlowOrbMat.current.opacity = 1 - textureOpacity;
     });
 
     return (
