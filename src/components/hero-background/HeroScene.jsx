@@ -119,6 +119,7 @@ export default function HeroScene({ animationMarkerRef }) {
         collapseRebound: 0,
         collapse: 0,
         pulse: 0,
+        expand: 0,
     });
     const scrollProgress = useRef(0);
 
@@ -148,6 +149,11 @@ export default function HeroScene({ animationMarkerRef }) {
         animationProgress.current.pulse = calcAnimationProgress(
             2,
             2.5,
+            elapsedTime,
+        );
+        animationProgress.current.expand = calcAnimationProgress(
+            2.5,
+            3,
             elapsedTime,
         );
     });
