@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { easedIn, easedOut } from "./animationUtils";
+import FlatCircleLine from "./FlatCircleLine";
 
 export default function Sun({ texture, animationProgress }) {
     const sun = useRef();
@@ -99,14 +100,22 @@ export default function Sun({ texture, animationProgress }) {
                 </mesh>
             </group>
             <group position={[-2.5, 0, 0]} ref={sunBohr} opacity={0} transparent>
-                <mesh>
-                    <meshBasicMaterial color={"#ff9640"} opacity={0.3} transparent />
-                    <ringGeometry args={[0.49, 0.5, 64]} />
-                </mesh>
-                <mesh position={[0, 0.49, 0]}>
-                    <meshBasicMaterial color={"#ff9640"} opacity={0.3} transparent />
-                    <ringGeometry args={[0.04, 0.05, 64]} />
-                </mesh>
+                <FlatCircleLine 
+                    position={[0, 0, 0]}
+                    thickness={1.5}
+                    radius={0.5}
+                    segments={64}
+                    opacity={0.3}
+                    color={"#ff9640"}
+                />
+                <FlatCircleLine 
+                    position={[0, 0.49, 0]}
+                    thickness={1.5}
+                    radius={0.05}
+                    segments={64}
+                    opacity={0.3}
+                    color={"#ff9640"}
+                />
             </group>
         </>
     );
