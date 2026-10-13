@@ -54,7 +54,12 @@ function App() {
                         <header>
                             <h2>Hi, I'm</h2>
                             <div className="name">
-                                <ElementTile></ElementTile>
+                                <ElementTile
+                                    elementName={"Yttrium"}
+                                    elementSymbol={"Y"}
+                                    massNum={88.905}
+                                    protonNum={39}
+                                ></ElementTile>
                                 <h1>uhan.</h1>
                             </div>
                         </header>
