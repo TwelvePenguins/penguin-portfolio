@@ -1,9 +1,11 @@
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import * as THREE from "three";
 import { easedOut } from "./animationUtils";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function Europa({ texture, animationProgress }) {
+export default function Europa({ texture }) {
+    const animationProgress = useContext(AnimationProgressContext);
     const europa = useRef();
     const europaTexturedMat = useRef();
     const europaGlowMat = useRef();

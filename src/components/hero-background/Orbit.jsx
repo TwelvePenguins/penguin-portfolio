@@ -1,14 +1,11 @@
-import { useMemo, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { easedIn, easedOut } from "./animationUtils";
 import * as THREE from "three";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function Orbit({
-    orbitDetail,
-    scrollProgress,
-    index,
-    animationProgress,
-}) {
+export default function Orbit({ orbitDetail, scrollProgress, index }) {
+    const animationProgress = useContext(AnimationProgressContext);
     const { orbitRadius, planetRadius, planetPositionXY, color } = orbitDetail;
     const planetRef = useRef();
     const orbitRef = useRef();

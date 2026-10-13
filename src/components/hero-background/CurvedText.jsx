@@ -1,13 +1,11 @@
 import { Text } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import * as THREE from "three";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function CurvedText({
-    details,
-    animationProgress,
-    scrollProgress,
-}) {
+export default function CurvedText({ details, scrollProgress }) {
+    const animationProgress = useContext(AnimationProgressContext);
     //Curvature in radians, up to +/- pi
     //Curvature cannot be 0
     //Content length cannot be 1

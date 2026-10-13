@@ -1,8 +1,9 @@
 import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { easedIn } from "./animationUtils";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
 export default function FlatCircleLine({
     thickness,
@@ -11,8 +12,8 @@ export default function FlatCircleLine({
     color,
     opacity = 1,
     position = [0, 0, 0],
-    animationProgress,
 }) {
+    const animationProgress = useContext(AnimationProgressContext);
     if (segments % 4 !== 0) {
         throw new Error("FlatCircleLine: segments must be divisible by 4.");
     }

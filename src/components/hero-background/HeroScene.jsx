@@ -11,6 +11,7 @@ import Bennu from "./Bennu";
 import Orbit from "./Orbit";
 import * as THREE from "three";
 import CurvedText from "./CurvedText";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
 export default function HeroScene({ animationMarkerRef }) {
     const [europaTexture, sunTexture, bennuTexture] = useLoader(TextureLoader, [
@@ -120,6 +121,7 @@ export default function HeroScene({ animationMarkerRef }) {
         collapse: 0,
         pulse: 0,
         expand: 0,
+        elementMorph: 0,
     });
     const scrollProgress = useRef(0);
 
@@ -164,7 +166,7 @@ export default function HeroScene({ animationMarkerRef }) {
     });
 
     return (
-        <>
+        <AnimationProgressContext.Provider value={animationProgress}>
             <ambientLight intensity={0.5} />
             <directionalLight
                 color="white"
@@ -176,15 +178,9 @@ export default function HeroScene({ animationMarkerRef }) {
                 position={[-2.5, 0, 0]}
                 target-position={[0, 0, 0]}
             />
-            <Sun texture={sunTexture} animationProgress={animationProgress} />
-            <Europa
-                texture={europaTexture}
-                animationProgress={animationProgress}
-            />
-            <Bennu
-                texture={bennuTexture}
-                animationProgress={animationProgress}
-            />
+            <Sun texture={sunTexture} />
+            <Europa texture={europaTexture} />
+            <Bennu texture={bennuTexture} />
             {initialOrbitDetails.map((detail, index) => {
                 return (
                     <Orbit
@@ -192,7 +188,6 @@ export default function HeroScene({ animationMarkerRef }) {
                         key={index}
                         index={index}
                         scrollProgress={scrollProgress}
-                        animationProgress={animationProgress}
                     />
                 );
             })}
@@ -201,11 +196,10 @@ export default function HeroScene({ animationMarkerRef }) {
                     <CurvedText
                         key={detail.content}
                         details={detail}
-                        animationProgress={animationProgress}
                         scrollProgress={scrollProgress}
                     />
                 );
             })}
-        </>
+        </AnimationProgressContext.Provider>
     );
 }

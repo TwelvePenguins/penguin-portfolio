@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { easedIn, easedOut } from "./animationUtils";
 import FlatCircleLine from "./FlatCircleLine";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function Sun({ texture, animationProgress }) {
+export default function Sun({ texture }) {
+    const animationProgress = useContext(AnimationProgressContext);
     const sun = useRef();
     const sunBohr = useRef();
     const sunTexturedMat = useRef();
@@ -112,7 +114,6 @@ export default function Sun({ texture, animationProgress }) {
                     segments={64}
                     opacity={0.3}
                     color={"#ff9640"}
-                    animationProgress={animationProgress}
                 />
                 <FlatCircleLine
                     position={[0, 0.49, 0]}
@@ -121,7 +122,6 @@ export default function Sun({ texture, animationProgress }) {
                     segments={64}
                     opacity={0.3}
                     color={"#ff9640"}
-                    animationProgress={animationProgress}
                 />
             </group>
         </>

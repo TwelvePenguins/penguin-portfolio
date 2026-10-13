@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { easedOut } from "./animationUtils";
+import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function Bennu({ texture, animationProgress }) {
+export default function Bennu({ texture }) {
+    const animationProgress = useContext(AnimationProgressContext);
     const bennu = useRef();
     const bennuTexturedMat = useRef();
     const bennuGlowMat = useRef();
