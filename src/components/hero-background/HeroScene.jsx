@@ -156,6 +156,11 @@ export default function HeroScene({ animationMarkerRef }) {
             3,
             elapsedTime,
         );
+        animationProgress.current.elementMorph = calcAnimationProgress(
+            3,
+            3.5,
+            elapsedTime,
+        );
     });
 
     return (
@@ -172,8 +177,14 @@ export default function HeroScene({ animationMarkerRef }) {
                 target-position={[0, 0, 0]}
             />
             <Sun texture={sunTexture} animationProgress={animationProgress} />
-            <Europa texture={europaTexture} animationProgress={animationProgress}/>
-            <Bennu texture={bennuTexture} animationProgress={animationProgress}/>
+            <Europa
+                texture={europaTexture}
+                animationProgress={animationProgress}
+            />
+            <Bennu
+                texture={bennuTexture}
+                animationProgress={animationProgress}
+            />
             {initialOrbitDetails.map((detail, index) => {
                 return (
                     <Orbit

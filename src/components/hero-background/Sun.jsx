@@ -12,7 +12,7 @@ export default function Sun({ texture, animationProgress }) {
 
     useEffect(() => {
         sunBohr.current.scale.setScalar(0);
-    }, [])
+    }, []);
 
     useFrame(() => {
         let scale = 1;
@@ -54,16 +54,16 @@ export default function Sun({ texture, animationProgress }) {
             sun.current.scale.setScalar(scale);
         } else if (animationProgress.current.expand < 1) {
             const bohrOpacity = THREE.MathUtils.lerp(
-                0, 
-                1, 
-                easedOut(animationProgress.current.expand)
-            )
+                0,
+                1,
+                easedOut(animationProgress.current.expand),
+            );
 
             const bohrScale = THREE.MathUtils.lerp(
-                0, 
-                1, 
-                easedOut(animationProgress.current.expand)
-            )
+                0,
+                1,
+                easedOut(animationProgress.current.expand),
+            );
 
             sunBohr.current.opacity = bohrOpacity;
             sunBohr.current.scale.setScalar(bohrScale);
@@ -99,22 +99,29 @@ export default function Sun({ texture, animationProgress }) {
                     />
                 </mesh>
             </group>
-            <group position={[-2.5, 0, 0]} ref={sunBohr} opacity={0} transparent>
-                <FlatCircleLine 
+            <group
+                position={[-2.5, 0, 0]}
+                ref={sunBohr}
+                opacity={0}
+                transparent
+            >
+                <FlatCircleLine
                     position={[0, 0, 0]}
                     thickness={1.5}
                     radius={0.5}
                     segments={64}
                     opacity={0.3}
                     color={"#ff9640"}
+                    animationProgress={animationProgress}
                 />
-                <FlatCircleLine 
+                <FlatCircleLine
                     position={[0, 0.49, 0]}
                     thickness={1.5}
                     radius={0.05}
                     segments={64}
                     opacity={0.3}
                     color={"#ff9640"}
+                    animationProgress={animationProgress}
                 />
             </group>
         </>
