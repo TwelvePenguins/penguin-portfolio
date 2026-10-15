@@ -160,9 +160,14 @@ export default function HeroScene({ animationMarkerRef }) {
         );
         animationProgress.current.elementMorph = calcAnimationProgress(
             3,
-            3.5,
+            4,
             elapsedTime,
         );
+        animationProgress.current.elementAppear = calcAnimationProgress(
+            4, 
+            4.5,
+            elapsedTime,
+        )
     });
 
     return (

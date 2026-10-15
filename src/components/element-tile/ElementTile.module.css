@@ -61,3 +61,31 @@ p.atomic {
     min-height: 0;
     overflow: hidden;
 }
+
+.element.fitted {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 6px;
+    transition: background-color 0.4s ease-in;
+}
+
+.fitted h1:first-of-type {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    font-size: 44px;
+    line-height: 1;
+}
+
+.fitted .atomic,
+.fitted .fullName {
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.fitted .mass {
+    font-size: 10px;
+    line-height: 1.2;
+}

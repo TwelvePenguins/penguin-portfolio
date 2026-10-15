@@ -1,8 +1,8 @@
 import styles from "./ElementTile.module.css";
 
-export default function ElementTile({ elementName, elementSymbol, massNum, protonNum}) {
+export default function ElementTile({ elementName, elementSymbol, massNum, protonNum, fitContainer = false }) {
     return (
-        <div className={styles.element}>
+        <div className={`${styles.element}${fitContainer ? ` ${styles.fitted}` : ""}`}>
             <p className={styles.atomic}>{protonNum}</p>
             <h1>{elementSymbol}</h1>
             <div className={styles.reveal}>

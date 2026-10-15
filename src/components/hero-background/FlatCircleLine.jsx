@@ -10,14 +10,22 @@ export default function FlatCircleLine({
     radius,
     segments = 64,
     color,
+    intensity = 7,
     opacity = 1,
     position = [0, 0, 0],
+    type = "electron",
 }) {
     const animationProgress = useContext(AnimationProgressContext);
     if (segments % 4 !== 0) {
         throw new Error("FlatCircleLine: segments must be divisible by 4.");
     }
     const lineRef = useRef();
+    const threeColor = new THREE.Color(color);
+    const RGBColor = [
+        threeColor.r * intensity,
+        threeColor.g * intensity,
+        threeColor.b * intensity,
+    ];
 
     const { circlePoints, squarePoints } = useMemo(() => {
         const circlePoints = [];
@@ -65,39 +73,69 @@ export default function FlatCircleLine({
 
             circlePoints.push([x, y, 0]);
         }
-
         return { circlePoints, squarePoints };
     }, [radius, segments]);
 
     useFrame(() => {
         if (!lineRef.current) return;
 
-        const pointsRendered = circlePoints.map((coords, index) => {
-            const newCoords = [];
-            for (let i = 0; i < 2; i++) {
-                newCoords.push(
-                    THREE.MathUtils.lerp(
-                        coords[i],
-                        squarePoints[index][i],
-                        easedIn(animationProgress.current.elementMorph),
-                    ),
-                );
-            }
-            newCoords.push(0);
-            return newCoords;
-        });
-        lineRef.current.geometry.setPositions(pointsRendered.flat());
+        if (type === "shell") {
+            const pointsRendered = circlePoints.map((coords, index) => {
+                const newCoords = [];
+                for (let i = 0; i < 2; i++) {
+                    newCoords.push(
+                        THREE.MathUtils.lerp(
+                            coords[i],
+                            squarePoints[index][i],
+                            easedIn(animationProgress.current.elementMorph),
+                        ),
+                    );
+                }
+                newCoords.push(0);
+                return newCoords;
+            });
+            lineRef.current.geometry.setPositions(pointsRendered.flat());
+        } else if (type === "electron") {
+            const translationProgress = THREE.MathUtils.clamp(
+                animationProgress.current.elementMorph * 2,
+                0,
+                1,
+            );
+
+            const translatedX = THREE.MathUtils.lerp(
+                position[0],
+                0,
+                easedIn(translationProgress),
+            );
+
+            const translatedY = THREE.MathUtils.lerp(
+                position[1],
+                0,
+                easedIn(translationProgress),
+            );
+
+            const opacity = THREE.MathUtils.lerp(
+                1,
+                0,
+                easedIn(translationProgress),
+            );
+
+            lineRef.current.position.x = translatedX;
+            lineRef.current.position.y = translatedY;
+            lineRef.current.material.opacity = opacity;
+        }
     });
 
     return (
         <Line
             ref={lineRef}
             points={circlePoints}
-            color={color}
+            color={RGBColor}
             lineWidth={thickness}
             transparent
             opacity={opacity}
             position={position}
+            toneMapped={false}
         />
     );
 }
