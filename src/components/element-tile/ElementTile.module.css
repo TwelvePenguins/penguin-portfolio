@@ -68,6 +68,7 @@ p.atomic {
     height: 100%;
     padding: 6px;
     transition: background-color 0.4s ease-in;
+    border: none;
 }
 
 .fitted h1:first-of-type {
@@ -88,4 +89,9 @@ p.atomic {
 .fitted .mass {
     font-size: 10px;
     line-height: 1.2;
+}
+
+.fitted .reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
 }

@@ -63,19 +63,12 @@ export default function Sun({ texture }) {
             }
             sun.current.scale.setScalar(scale);
         } else if (animationProgress.current.expand < 1) {
-            const bohrOpacity = THREE.MathUtils.lerp(
-                0,
-                1,
-                easedOut(animationProgress.current.expand),
-            );
-
             const bohrScale = THREE.MathUtils.lerp(
                 0,
                 1,
                 easedOut(animationProgress.current.expand),
             );
 
-            sunBohr.current.opacity = bohrOpacity;
             sunBohr.current.scale.setScalar(bohrScale);
         } else if (animationProgress.current.elementMorph < 1) {
             const glowIntensity = THREE.MathUtils.lerp(
@@ -95,9 +88,9 @@ export default function Sun({ texture }) {
         } else if (animationProgress.current.elementAppear < 1) {
             const opacity = THREE.MathUtils.lerp(
                 0,
-                1, 
-                easedOut(animationProgress.current.elementAppear)
-            )
+                1,
+                easedOut(animationProgress.current.elementAppear),
+            );
 
             hydrogen.current.style.opacity = opacity;
         }
@@ -132,12 +125,7 @@ export default function Sun({ texture }) {
                     />
                 </mesh>
             </group>
-            <group
-                position={[-2.5, 0, 0]}
-                ref={sunBohr}
-                opacity={0}
-                transparent
-            >
+            <group position={[-2.5, 0, 0]} ref={sunBohr}>
                 <FlatCircleLine
                     position={[0, 0, 0]}
                     thickness={1.5}
@@ -165,6 +153,7 @@ export default function Sun({ texture }) {
                         opacity: 0,
                         width: TILE_SIZE,
                         height: TILE_SIZE,
+                        backgroundColor: "#c05d00",
                     }}
                 >
                     <ElementTile

@@ -2,7 +2,7 @@ import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useContext, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { easedIn } from "./animationUtils";
+import { easedIn, easedOut } from "./animationUtils";
 import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
 export default function FlatCircleLine({
@@ -94,6 +94,14 @@ export default function FlatCircleLine({
                 newCoords.push(0);
                 return newCoords;
             });
+
+            const newRGBColor = RGBColor.map((color) => {
+                const colorIntensityFactor = 1 - animationProgress.current.elementAppear
+                return color * easedOut(colorIntensityFactor);
+            })
+
+            lineRef.current.material.color = newRGBColor;
+            lineRef.current.material.opacity = 1 - animationProgress.current.elementAppear;
             lineRef.current.geometry.setPositions(pointsRendered.flat());
         } else if (type === "electron") {
             const translationProgress = THREE.MathUtils.clamp(
