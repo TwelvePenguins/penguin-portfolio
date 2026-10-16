@@ -96,12 +96,14 @@ export default function FlatCircleLine({
             });
 
             const newRGBColor = RGBColor.map((color) => {
-                const colorIntensityFactor = 1 - animationProgress.current.elementAppear
+                const colorIntensityFactor =
+                    1 - animationProgress.current.elementAppear;
                 return color * easedOut(colorIntensityFactor);
-            })
+            });
 
             lineRef.current.material.color = newRGBColor;
-            lineRef.current.material.opacity = 1 - animationProgress.current.elementAppear;
+            lineRef.current.material.opacity =
+                1 - animationProgress.current.elementAppear;
             lineRef.current.geometry.setPositions(pointsRendered.flat());
         } else if (type === "electron") {
             const translationProgress = THREE.MathUtils.clamp(
@@ -130,6 +132,20 @@ export default function FlatCircleLine({
 
             lineRef.current.position.x = translatedX;
             lineRef.current.position.y = translatedY;
+            lineRef.current.material.opacity = opacity;
+        } else if (type === "valence") {
+            const translationProgress = THREE.MathUtils.clamp(
+                animationProgress.current.elementMorph * 2,
+                0,
+                1,
+            );
+
+            const opacity = THREE.MathUtils.lerp(
+                1,
+                0,
+                easedIn(translationProgress),
+            );
+
             lineRef.current.material.opacity = opacity;
         }
     });

@@ -125,13 +125,11 @@ export default function Sun({ texture }) {
                     />
                 </mesh>
             </group>
-            <group position={[-2.5, 0, 0]} ref={sunBohr}>
+            <group position={[-2.5, 0, 0]} scale={0} ref={sunBohr}>
                 <FlatCircleLine
                     position={[0, 0, 0]}
                     thickness={1.5}
                     radius={SHELL_RADIUS}
-                    segments={64}
-                    opacity={1}
                     color={0xff7c02}
                     type="shell"
                 />
@@ -139,8 +137,6 @@ export default function Sun({ texture }) {
                     position={[0, 0.49, 0]}
                     thickness={1.5}
                     radius={0.05}
-                    segments={64}
-                    opacity={1}
                     color={0xff7c02}
                 />
                 <Html
@@ -160,7 +156,7 @@ export default function Sun({ texture }) {
                         fitContainer
                         elementName={"Hydrogen"}
                         elementSymbol={"H"}
-                        massNum={1.001}
+                        massNum={1.008}
                         protonNum={1}
                     />
                 </Html>

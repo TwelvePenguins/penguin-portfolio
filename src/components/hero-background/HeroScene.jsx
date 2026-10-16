@@ -122,6 +122,7 @@ export default function HeroScene({ animationMarkerRef }) {
         pulse: 0,
         expand: 0,
         elementMorph: 0,
+        elementAppear: 0,
     });
     const scrollProgress = useRef(0);
 
