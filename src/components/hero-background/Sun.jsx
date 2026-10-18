@@ -134,7 +134,7 @@ export default function Sun({ texture }) {
                     type="shell"
                 />
                 <FlatCircleLine
-                    position={[0, 0.49, 0]}
+                    position={[0, SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.05}
                     color={0xff7c02}

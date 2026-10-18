@@ -127,13 +127,13 @@ export default function Bennu({ texture }) {
                     type="shell"
                 />
                 <FlatCircleLine
-                    position={[0, 2, 0]}
+                    position={[0, SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
                 />
                 <FlatCircleLine
-                    position={[0, -2, 0]}
+                    position={[0, -1 * SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
@@ -146,28 +146,14 @@ export default function Bennu({ texture }) {
                     type="valence"
                 />
                 <FlatCircleLine
-                    position={[0.3, 3.47, 0]}
+                    position={[0, 3.5, 0]}
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
                     type="valence"
                 />
                 <FlatCircleLine
-                    position={[-0.3, 3.47, 0]}
-                    thickness={1.5}
-                    radius={0.2}
-                    color={0x755537}
-                    type="valence"
-                />
-                <FlatCircleLine
-                    position={[0.3, -3.47, 0]}
-                    thickness={1.5}
-                    radius={0.2}
-                    color={0x755537}
-                    type="valence"
-                />
-                <FlatCircleLine
-                    position={[-0.3, -3.47, 0]}
+                    position={[0, -3.5, 0]}
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
