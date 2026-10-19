@@ -36,18 +36,21 @@ export default function Orbit({ orbitDetail, scrollProgress, index }) {
     useFrame((_, delta) => {
         const delay = index * 0.12;
 
-        orbitOpacity.current = THREE.MathUtils.damp(
-            orbitOpacity.current,
-            scrollProgress.current,
-            10,
-            delta,
-        );
+        if (animationProgress.current.collapseRebound === 0) {
+            orbitOpacity.current = THREE.MathUtils.damp(
+                orbitOpacity.current,
+                scrollProgress.current,
+                10,
+                delta,
+            );
+    
+            material.opacity = THREE.MathUtils.clamp(
+                (orbitOpacity.current - delay) / (1 - delay),
+                0,
+                1,
+            );
+        }
 
-        material.opacity = THREE.MathUtils.clamp(
-            (orbitOpacity.current - delay) / (1 - delay),
-            0,
-            1,
-        );
         if (animationProgress.current.collapseRebound < 1) {
             currentOrbitRadius = THREE.MathUtils.lerp(
                 orbitRadius,

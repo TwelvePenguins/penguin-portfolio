@@ -8,7 +8,11 @@ import { ToneMappingMode } from "postprocessing";
 import HeroScene from "./HeroScene";
 import CameraRig from "./CameraRig";
 
-export default function HeroBackground({ eventSource, animationMarkerRef }) {
+export default function HeroBackground({
+    eventSource,
+    animationMarkerRef,
+    setHeroPhase,
+}) {
     return (
         <Canvas
             camera={{ position: [0, 0, 3], fov: 75 }}
@@ -16,7 +20,10 @@ export default function HeroBackground({ eventSource, animationMarkerRef }) {
             eventPrefix="client"
         >
             <CameraRig />
-            <HeroScene animationMarkerRef={animationMarkerRef} />
+            <HeroScene
+                animationMarkerRef={animationMarkerRef}
+                setHeroPhase={setHeroPhase}
+            />
             <EffectComposer>
                 <Bloom
                     mipmapBlur

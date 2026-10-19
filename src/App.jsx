@@ -3,16 +3,18 @@ import NavBar from "./components/nav-bar/NavBar";
 import "./App.css";
 import HeroBackground from "./components/hero-background/HeroBackground";
 import { ChevronDown } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
 function App() {
     const scrollIndicatorRef = useRef();
-    const heroRef = useRef(null);
+    const mainRef = useRef(null);
+    const contentRef = useRef();
 
     const SCROLL_FADE_START = 0;
     const SCROLL_FADE_END = 50;
+    const [heroPhase, setHeroPhase] = useState("initial");
 
     const animationMarkerRef = useRef();
 
@@ -45,12 +47,28 @@ function App() {
         };
     }, []);
 
+    useLayoutEffect(() => {
+        if (heroPhase === "animating") {
+            contentRef.current.style.opacity = 0;
+            const oldHeight = mainRef.current.getBoundingClientRect().height;
+            const oldScrollY = window.scrollY;
+            mainRef.current.style.height = "100vh";
+            const newHeight = mainRef.current.getBoundingClientRect().height;
+            const removedHeight = oldHeight - newHeight;
+
+            window.scrollTo({
+                top: oldScrollY - removedHeight,
+                behavior: "instant",
+            });
+        }
+    }, [heroPhase]);
+
     return (
         <>
             <NavBar></NavBar>
-            <main ref={heroRef}>
+            <main ref={mainRef}>
                 <div id="overlay">
-                    <div id="content">
+                    <div id="content" ref={contentRef}>
                         <header>
                             <h2>Hi, I'm</h2>
                             <div className="name">
@@ -74,8 +92,9 @@ function App() {
                 </div>
                 <div id="background">
                     <HeroBackground
-                        eventSource={heroRef}
+                        eventSource={mainRef}
                         animationMarkerRef={animationMarkerRef}
+                        setHeroPhase={setHeroPhase}
                     />
                 </div>
             </main>

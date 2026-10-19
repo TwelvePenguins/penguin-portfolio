@@ -13,7 +13,7 @@ import * as THREE from "three";
 import CurvedText from "./CurvedText";
 import { AnimationProgressContext } from "../../contexts/AnimationProgressContext";
 
-export default function HeroScene({ animationMarkerRef }) {
+export default function HeroScene({ animationMarkerRef, setHeroPhase }) {
     const [europaTexture, sunTexture, bennuTexture] = useLoader(TextureLoader, [
         europaMap,
         sunMap,
@@ -40,6 +40,7 @@ export default function HeroScene({ animationMarkerRef }) {
             entries.forEach((entry) => {
                 if (entry.isIntersecting && entry.intersectionRatio == 1) {
                     animationStarted.current = true;
+                    setHeroPhase("animating");
                 }
             });
         };
@@ -140,7 +141,7 @@ export default function HeroScene({ animationMarkerRef }) {
         elapsedTime.current += delta;
 
         animationProgress.current.collapseRebound = calcAnimationProgress(
-            0.25,
+            0,
             0.4,
             elapsedTime,
         );
@@ -165,10 +166,10 @@ export default function HeroScene({ animationMarkerRef }) {
             elapsedTime,
         );
         animationProgress.current.elementAppear = calcAnimationProgress(
-            4, 
+            4,
             4.5,
             elapsedTime,
-        )
+        );
     });
 
     return (
