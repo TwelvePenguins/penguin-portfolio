@@ -75,7 +75,7 @@ export default function Orbit({ orbitDetail, scrollProgress, index }) {
             );
             currentPlanetPositionX = THREE.MathUtils.lerp(
                 planetPositionXY[0],
-                -4,
+                -5,
                 easedIn(animationProgress.current.collapse),
             );
             currentPlanetPositionY = THREE.MathUtils.lerp(
