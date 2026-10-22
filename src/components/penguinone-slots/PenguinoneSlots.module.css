@@ -1,0 +1,32 @@
+.slotBackground {
+    background-color: rgba(128, 128, 128, 0.5);
+    display: flex;
+    width: min-content;
+    border-radius: 20px;
+    align-items: end;
+    padding: 20px
+}
+
+.slotSpot {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.slotBackground>p {
+    margin: 0;
+    padding: 0px 15px 0px 5px;
+}
+
+.slotBackground>p:first-of-type {
+    color: #d1b9a4;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.slotBackground>p:last-of-type {
+    color: #ff7c02;
+    font-weight: 600;
+    font-size: x-large;
+}
