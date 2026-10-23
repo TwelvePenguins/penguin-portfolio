@@ -124,18 +124,21 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={SHELL_RADIUS}
                     color={0x755537}
+                    intensity={20}
                     type="shell"
                 />
                 <FlatCircleLine
                     position={[0, SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.2}
+                    intensity={20}
                     color={0x755537}
-                />
+                    />
                 <FlatCircleLine
                     position={[0, -1 * SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.2}
+                    intensity={20}
                     color={0x755537}
                 />
                 <FlatCircleLine
@@ -143,6 +146,7 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={SHELL_RADIUS * 1.75}
                     color={0x755537}
+                    intensity={20}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -150,6 +154,7 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
+                    intensity={20}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -157,6 +162,7 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
+                    intensity={20}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -164,6 +170,7 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
+                    intensity={20}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -171,6 +178,7 @@ export default function Bennu({ texture }) {
                     thickness={1.5}
                     radius={0.2}
                     color={0x755537}
+                    intensity={20}
                     type="valence"
                 />
                 <Html

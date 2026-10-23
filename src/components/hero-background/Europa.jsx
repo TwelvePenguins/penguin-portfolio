@@ -124,18 +124,21 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={SHELL_RADIUS}
                     color={0x2c78be}
+                    intensity={10}
                     type="shell"
                 />
                 <FlatCircleLine
                     position={[0, SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.12}
+                    intensity={10}
                     color={0x2c78be}
                 />
                 <FlatCircleLine
                     position={[0, -1 * SHELL_RADIUS, 0]}
                     thickness={1.5}
                     radius={0.12}
+                    intensity={10}
                     color={0x2c78be}
                 />
                 <FlatCircleLine
@@ -143,6 +146,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={SHELL_RADIUS * 1.75}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -150,6 +154,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -157,6 +162,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -164,6 +170,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -171,6 +178,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -178,6 +186,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 />
                 <FlatCircleLine
@@ -185,6 +194,7 @@ export default function Europa({ texture }) {
                     thickness={1.5}
                     radius={0.12}
                     color={0x2c78be}
+                    intensity={10}
                     type="valence"
                 /> 
                 <Html
